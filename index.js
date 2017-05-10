@@ -52,6 +52,7 @@ bot.on("message", function(message){
 			function (item, index) {
 				embed.addField('!' + item, commandsInfo[index]);
 			});
+			embed.setColor(0x66ccff);
 			message.channel.sendEmbed(embed);
 			break;
 		//chooseow
