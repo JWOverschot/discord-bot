@@ -5,6 +5,7 @@ const bot = new Discord.Client();
 var prefix = "!";
 
 var commands = ["hello", "ping", "help", "chooseow", "ask", "play", "skip", "stop", "avatar"];
+var commandsInfo = ["Greetings message.", "Shows bot's ping", "Shows this message", "Chooses a random overwatch hero", "Ask any question, most questions wil get you a yes, no or maybe answers", "will play the YouTube link after it. If there is already a song playing it will add it to the queue", "Will skip the current song", "Will stop the music and clear the queue", "shows you your avatar"];
 
 function play(connection, message) {
 	var server = servers[message.guild.id];
@@ -20,6 +21,11 @@ function play(connection, message) {
 }
 
 var servers = {};
+
+bot.on("ready", function(){
+	console.log("Zenyatta is here.");
+	bot.user.setGame("Overwatch");
+})
 
 bot.on("message", function(message){
 	if (message.author.equals(bot.user)) return;
@@ -39,9 +45,14 @@ bot.on("message", function(message){
 		case commands[1]:
 			message.channel.send("pong " + bot.ping + "ms");
 			break;
-		//help
+		//help"all comands are: !" + commands.join(', !')
 		case commands[2]:
-				message.reply("all comands are: !" + commands.join(', !'));
+			var embed = new Discord.RichEmbed()
+			commands.forEach(
+			function (item, index) {
+				embed.addField('!' + item, commandsInfo[index]);
+			});
+			message.channel.sendEmbed(embed);
 			break;
 		//chooseow
 		case commands[3]:
@@ -55,11 +66,17 @@ bot.on("message", function(message){
 			var answers = ['Yes', 'No', 'Maybe'];
 			var randomNum = Math.floor(Math.random() * 3);
 			var answer = answers[randomNum];
+			if (message.content == '!ask what time is it?') {
+				var d = new Date();
+				var h = d.getHours();
+				var m = d.getMinutes();
+				message.channel.send("it's " + h + ":" + m);
+			} else {
 			if (args[1]) {
 				message.channel.send(answer);
 			} else {
 				message.channel.send("Ask a yes or no question.");
-			}
+			};}
 			break;
 		//play
 		case commands[5]:
