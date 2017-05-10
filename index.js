@@ -45,7 +45,7 @@ bot.on("message", function(message){
 		case commands[1]:
 			message.channel.send("pong " + bot.ping + "ms");
 			break;
-		//help"all comands are: !" + commands.join(', !')
+		//help
 		case commands[2]:
 			var embed = new Discord.RichEmbed()
 			commands.forEach(
@@ -71,6 +71,9 @@ bot.on("message", function(message){
 				var d = new Date();
 				var h = d.getHours();
 				var m = d.getMinutes();
+				if (m.toString().length <= 1) {
+					m = '0' + m;
+				}
 				message.channel.send("it's " + h + ":" + m);
 			} else {
 			if (args[1]) {
