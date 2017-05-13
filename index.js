@@ -1,11 +1,16 @@
+// specific for public bot
+var botToken = 'MzExNDI3OTU1ODYxNzQ5NzYw.C_MXbw.ggIbW2EV1MyLdWaQ1nj_nf5VzUY';
+var botName = "Zenyatta";
+// the rest of the code changes
+var botVersion = "Jisbot 0.1.3";
 const Discord = require('discord.js');
 const ytdl = require('ytdl-core');
 const bot = new Discord.Client();
 
 var prefix = "!";
 
-var commands = ["hello", "bye", "ping", "help", "chooseow", "ask", "play", "skip", "stop", "queue", "version"];
-var commandsInfo = ["Greetings message.", "Farewell message", "Shows bot's ping", "Shows this message", "Chooses a random overwatch hero", "Ask any question, most questions wil get you a yes, no or maybe answers", "will play the YouTube link after it. If there is already a song playing it will add it to the queue", "Will skip the current song", "Will stop the music and clear the queue", "shows the songs in the queue", "Shows version of bot"];
+var commands = ["hello", "bye", "ping", "help", "chooseow", "ask","sing", "play", "skip", "stop", "queue", "version"];
+var commandsInfo = ["Greetings message.", "Farewell message", "Shows bot's ping", "Shows this message", "Chooses a random overwatch hero", "Ask any question, most questions wil get you a yes, no or maybe answers", "Zenyatta will sing a song", "will play the YouTube link after it. If there is already a song playing it will add it to the queue", "Will skip the current song", "Will stop the music and clear the queue", "shows the songs in the queue", "Shows version of bot"];
 
 var servers = {};
 function play(connection, message) {
@@ -16,15 +21,17 @@ function play(connection, message) {
 	server.queue.shift();
 
 	server.dispatcher.on("end", function() {
-		if (server.queue[0]) {play(connection, message); console.log("playing in voice channel");}
+		if (server.queue[0]) {play(connection, message); console.log("playing music");}
 		else {connection.disconnect();
 			bot.user.setGame("Overwatch");
 			console.log("disconnected from voice channel");}
 	});
 }
 
+bot.login(botToken);
+
 bot.on("ready", function(){
-	console.log("Zenyatta is here.");
+	console.log(botName + " is here. Version " + botVersion);
 	bot.user.setGame("Overwatch");
 })
 
@@ -54,14 +61,11 @@ bot.on("message", function(message){
 		//ping
 		case commands[2]:
 			message.channel.send("pong " + bot.ping + "ms");
-			console.log("bot ping "  + bot.ping);
+			console.log("bot ping "  + bot.ping + "ms");
 			break;
 		//help
 		case commands[3]:
 			var embed = new Discord.RichEmbed()
-			embed.setTitle("!stop command is broken!");
-			embed.setDescription("use !skip instead");
-			embed.addBlankField();
 			commands.forEach(
 			function (item, index) {
 				embed.addField('!' + item, commandsInfo[index]);
@@ -104,17 +108,49 @@ bot.on("message", function(message){
 				console.log("ask error send");
 			}}
 			break;
-		//play
+		//sing
 		case commands[6]:
+			if (!message.member.voiceChannel) {
+				message.channel.send("You must be in a voice channel.");
+				console.log("play not in channel error send");
+				return;
+			}
+			if (!servers[message.guild.id]) servers[message.guild.id] = {
+				queue: []
+			};
+			var songs = ["https://www.youtube.com/watch?v=aiWA7gO_cnk", "https://www.youtube.com/watch?v=mRJrXRCq3w8"];
+			var randomNum = Math.floor(Math.random() * 2);
+			var song = songs[randomNum];
+			var server = servers[message.guild.id];
+			server.queue.push(song);
+			console.log("song added to queue");
+			if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection){
+				play(connection, message);
+				bot.user.setGame("Singing");
+				console.log('Singing in voice channel');
+			});
+			break;
+		//play
+		case commands[7]:
 			if (!args[1]) {
 				message.channel.send("Provide a link.");
 				console.log("play link error send");
 				return;
 			}
+			if (args[2]) {
+				message.channel.send("Too many arguments '!play url'");
+				console.log("Too many arguments");
+				return;
+			}
+			if (!args[1].includes('youtube.com/watch?v=' || 'y2u.be/' || 'youtu.be/')) {
+				message.channel.send("unsupported link, only youtube links work.");
+				console.log("not a youtube link");
+				return;
+			}
 			if (!message.member.voiceChannel) {
 				message.channel.send("You must be in a voice channel.");
-				return;
 				console.log("play not in channel error send");
+				return;
 			}
 			if (!servers[message.guild.id]) servers[message.guild.id] = {
 				queue: []
@@ -126,25 +162,25 @@ bot.on("message", function(message){
 			if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection){
 				play(connection, message);
 				bot.user.setGame("Music");
-				console.log('playing music');
+				console.log('playing in voice channel');
 			});
 			break;
 		//skip
-		case commands[7]:
+		case commands[8]:
 			var server = servers[message.guild.id];
 			if (server.dispatcher) server.dispatcher.end();
 			console.log("song skiped");
 			break;
 		//stop
-		// case commands[8]:
-		// 	var server = servers[message.guild.id];
-		// 	if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
-		// 	console.log("music stoped");
-		// 	break;
-		//queue
 		case commands[9]:
 			var server = servers[message.guild.id];
-			if (!server) {
+			if (message.guild.voiceConnection) for (var i = 0; i < server.queue.length; i++) {server.queue.shift()} server.dispatcher.end();
+			console.log("music stoped");
+			break;
+		queue
+		case commands[10]:
+			var server = servers[message.guild.id];
+			if (!server || !server.queue.length > 0) {
 				message.channel.send("There are no songs in the queue.");
 				console.log("no queue");
 			} else {
@@ -159,16 +195,13 @@ bot.on("message", function(message){
 			}
 			break;
 		//version
-		case commands[10]:
-			message.channel.send("Jisbot 0.1.2");
-			console.log("Jisbot 0.1.2");
+		case commands[11]:
+				message.channel.send(botVersion);
+				console.log(botVersion);
 			break;
 
 		default:
-			message.reply("this command does not exist, try !help");
+			message.channel.send(message.content + " command does not exist, try !help");
 			console.log("error command does not exist");
 	}
 });
-
-bot.login('MzExNDI3OTU1ODYxNzQ5NzYw.C_MXbw.ggIbW2EV1MyLdWaQ1nj_nf5VzUY');
-
