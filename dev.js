@@ -1,6 +1,6 @@
-// specific for public bot
-var botToken = 'MzExNDI3OTU1ODYxNzQ5NzYw.C_MXbw.ggIbW2EV1MyLdWaQ1nj_nf5VzUY';
-var botName = "Zenyatta";
+// specific for dev bot
+var botToken = 'MzEyMTE5ODg4NDMxMDIyMDgx.C_Wb7A.Wxa9AxKqPfMBatYhqe-obzQsaHA';
+var botName = "Devyatta";
 // the rest of the code changes
 var botVersion = "Jisbot 0.2.0";
 const Discord = require('discord.js');
