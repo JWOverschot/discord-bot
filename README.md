@@ -9,7 +9,6 @@ This bot also uses the [YouTube Data API v3](https://developers.google.com/youtu
 All the used node moduels are listed in the package.json file.
 
 ## Versions
----
 
 ### Version 0.2.0
 
