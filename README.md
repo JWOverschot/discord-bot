@@ -4,7 +4,7 @@
 
 It's written in javascript whit node.js.  
 It's written with the [discord.js library](https://discord.js.org/).  
-This bot also uses the [YouTube Data API v3](https://developers.google.com/youtube/v3/) and [Google Custom Search API](https://developers.google.com/custom-search/json-api/v1/overview.
+This bot also uses the [YouTube Data API v3](https://developers.google.com/youtube/v3/) and [Google Custom Search API](https://developers.google.com/custom-search/json-api/v1/overview).
 
 All the used node moduels are listed in the package.json file.
 
