@@ -15,7 +15,7 @@ All the used node moduels are listed in the package.json file.
 -added soup command that plays audio from a video.  
 -added timestamps to console logs.  
 -added youtube search function to search any song on youtube.  
-- added google search images that displays the first result of google image search.  
+-added google search images that displays the first result of google image search.  
 -fixed time displaing.  
 
 ### version 0.1.3
