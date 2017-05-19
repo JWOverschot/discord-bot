@@ -1,3 +1,4 @@
+[![Dependencies](https://david-dm.org/JWOverschot/discord-bot.svg)](https://david-dm.org/JWOverschot/discord-bot)
 # Discord bot
 
 ## Discord bot is a bot for [discord](https://discordapp.com/) a voice and text chat application.
