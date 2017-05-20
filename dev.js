@@ -345,7 +345,7 @@ bot.on("message", function(message)
 			queueTitles.forEach(
 			function (item, index)
 			{
-				embed.addField(item, queueLengths[i]);
+				embed.addField(item, index+1);
 				i++;
 			});
 			embed.setColor(0x3399ff);
