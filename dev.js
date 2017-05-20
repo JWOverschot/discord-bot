@@ -283,7 +283,7 @@ bot.on("message", function(message)
 					}
 					else
 					{
-						if (result.items[0] == undefined)
+						if (result.items[0] == undefined  || result.items[0].id.videoId == undefined)
 						{
 							message.channel.send("No search results");
 							console.log(showTime() + " no search results");
