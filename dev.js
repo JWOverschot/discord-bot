@@ -4,7 +4,7 @@ var botName = "Devyatta";
 var botToken = keys.devBotKey();
 var googleSearch = keys.googleAPIKey();
 // the rest of the code changes
-var botVersion = "Jisbot 0.2.1";
+var botVersion = "Jisbot 0.2.2";
 const Discord = require('discord.js');
 const ytdl = require('ytdl-core');
 const bot = new Discord.Client();
@@ -95,6 +95,28 @@ bot.on("message", function(message)
 	if (!message.content.startsWith(prefix)) return;
 
 	var args = message.content.substring(prefix.length).split(" ");
+
+	function getVideoInfo(id)
+	{
+		ytdl.getInfo(id, function(err, info)
+		{
+			if (err) throw err;
+			var title = info.title;
+			var length = info.length_seconds;
+			var time = length;
+			var minutes = Math.floor(time / 60);
+			var seconds = time - minutes * 60;
+			var hours = Math.floor(time / 3600);
+			time = time - hours * 3600;
+			function str_pad_left(string,pad,length)
+			{
+			    return (new Array(length+1).join(pad)+string).slice(-length);
+			}
+			message.channel.send("'" + title + "'" +" [" + finalTime + "]" + " added to queue!");
+			console.log(showTime() + " song added to queue");
+			queueTitles.push(title + " [" + finalTime + "]");
+		});
+	}
 
 	switch (args[0].toLowerCase())
 	{
@@ -234,16 +256,7 @@ bot.on("message", function(message)
 					{
 						args[1] = args[1].split("youtu.be/").pop();
 					}
-					ytdl.getInfo(args[1], function(err, info)
-					{
-						if (err) throw err;
-						var title = info.title;
-						var length = info.length_seconds;
-						message.channel.send("'" + title + "'" + " added to queue!");
-						console.log(showTime() + " song added to queue");
-						queueTitles.push(title);
-						queueLengths.push(length);
-					});
+					getVideoInfo(args[1]);
 					if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection)
 					{
 						play(connection, message);
@@ -292,26 +305,7 @@ bot.on("message", function(message)
 							{
 								ytVideoId = ytVideoId.split("youtu.be/").pop();
 							}
-							ytdl.getInfo(ytVideoId, function(err, info)
-							{
-								if (err) throw err;
-								var title = info.title;
-								var length = info.length_seconds;
-								message.channel.send("'" + title + "'" + " added to queue!");
-								console.log(showTime() + " song added to queue");
-								var time = length;
-								var minutes = Math.floor(time / 60);
-								var seconds = time - minutes * 60;
-								var hours = Math.floor(time / 3600);
-								time = time - hours * 3600;
-								function str_pad_left(string,pad,length)
-								{
-								    return (new Array(length+1).join(pad)+string).slice(-length);
-								}
-								var finalTime = str_pad_left(minutes,'0',2)+':'+str_pad_left(seconds,'0',2);
-								queueTitles.push(title);
-								queueLengths.push(finalTime);
-							});
+							getVideoInfo(ytVideoId);
 							if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection)
 							{
 								play(connection, message);
