@@ -126,7 +126,7 @@ bot.on("message", function(message)
 		//hello
 		case commands[0]:
 			var hello = ["Greetings.", "Peace be upon you.", "Hello, world!"];
-			var randomNum = Math.floor(Math.random() * 3);
+			var randomNum = Math.floor(Math.random() * hello.length);
 			var msg = hello[randomNum];
 			message.reply(msg);
 			console.log(showTime() + " hello msg send");
@@ -134,7 +134,7 @@ bot.on("message", function(message)
 		//bye
 		case commands[1]:
 			var hello = ["Darkness falls.", "Time is an illusion, but the illusion is about to run out."];
-			var randomNum = Math.floor(Math.random() * 2);
+			var randomNum = Math.floor(Math.random() * hello.length);
 			var msg = hello[randomNum];
 			message.reply(msg);
 			console.log(showTime() + " bye message send");
@@ -158,7 +158,7 @@ bot.on("message", function(message)
 		//chooseow
 		case commands[4]:
 			var owCharacters = ['Genji', 'McCree', 'Pharah', 'Reaper', 'Soldier: 76', 'Sombra', 'Tracer', 'Bastion', 'Hanzo', 'Junkrat', 'Mei', 'Torbjörn', 'Widowmaker', 'D.VA', 'Orisa', 'Reinhardt', 'Roadhog', 'Winston', 'Zarya', 'Ana', 'Lúcio', 'Mercy', 'Symmetra', 'Zenyatta'];
-			var randomNum = Math.floor(Math.random() * 24);
+			var randomNum = Math.floor(Math.random() * owCharacters.length);
 			var chooseow = owCharacters[randomNum];
 			message.reply("Your hero is " + chooseow);
 			console.log(showTime() + " ow hero send");
@@ -166,7 +166,7 @@ bot.on("message", function(message)
 		//ask
 		case commands[5]:
 			var answers = ['Yes', 'No', 'Maybe'];
-			var randomNum = Math.floor(Math.random() * 3);
+			var randomNum = Math.floor(Math.random() * answers.length);
 			var answer = answers[randomNum];
 			if (message.content === '!ask what time is it?' || message.content === '!ask what is the time?' || message.content === '!ask time')
 			{
