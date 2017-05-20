@@ -21,7 +21,7 @@ require('crashreporter').configure({
 
 var prefix = "!";
 
-var commands = [/*0*/"hello", /*1*/"bye", /*2*/"ping", /*3*/"help", /*4*/"chooseow", /*5*/"ask", /*6*/"sing", /*7*/"play", /*8*/"skip", /*9*/"stop", /*10*/"queue", /*11*/"img", /*12*/"soup", /*13*/"info"];
+var commands = [/*0*/"hello", /*1*/"bye", /*2*/"ping", /*3*/"help", /*4*/"chooseow", /*5*/"ask", /*6*/"sing", /*7*/"play", /*8*/"skip", /*9*/"remove", /*10*/"stop", /*11*/"queue", /*12*/"img", /*13*/"soup", /*14*/"info"];
 var commandsInfo = [
 "Greetings message.", //hello
 "Farewell message", //bye
@@ -32,6 +32,7 @@ var commandsInfo = [
 "Zenyatta will sing a song", //sing
 "Will play the YouTube link or YouTube search result after it. If there is already a song playing it will add it to the queue", //play
 "Will skip the current song", //skip
+"Write the number corresponding to the song in the queue to remove it", //remove
 "Will stop the music and clear the queue", //stop
 "Shows the songs in the queue", //queue
 "Shows first image of google search", // img
@@ -324,14 +325,28 @@ bot.on("message", function(message)
 			if (server.dispatcher) server.dispatcher.end();
 			console.log(showTime() + " song skiped");
 			break;
-		//stop
+		//remove
 		case commands[9]:
+			var server = servers[message.guild.id];
+			if (!server.queue.length > 0)
+			{
+				message.channel.send("There are no songs in the queue.");
+				console.log(showTime() + " no queue");
+				return;
+			}
+			index = parseInt(args[1]) - 1;
+			server.queue.splice(index, 1);
+			queueTitles.splice(index, 1);
+			console.log(showTime() + " song removed from queue");
+			break;
+		//stop
+		case commands[10]:
 			var server = servers[message.guild.id];
 			if (message.guild.voiceConnection) for (var i = 0; i < server.queue.length; i++) {server.queue.shift(); queueTitles.shift();} server.dispatcher.end();
 			console.log(showTime() + " music stoped");
 			break;
 		//queue
-		case commands[10]:
+		case commands[11]:
 			var server = servers[message.guild.id];
 			if (!server || !server.queue.length > 0)
 			{
@@ -353,7 +368,7 @@ bot.on("message", function(message)
 			console.log(showTime() + " queue list send");
 			break;
 		//img
-		case commands[11]:
+		case commands[12]:
 			if (!args[1])
 			{
 				message.channel.send("No search query.");
@@ -377,7 +392,7 @@ bot.on("message", function(message)
 			});
 			break;
 		//soup
-		case commands[12]:
+		case commands[13]:
 			if (!message.member.voiceChannel)
 			{
 				message.channel.send("You must be in a voice channel.");
@@ -395,7 +410,7 @@ bot.on("message", function(message)
 			});
 			break;
 		//info
-		case commands[13]:
+		case commands[14]:
 				var embed = new Discord.RichEmbed()
 				embed.setTitle(botVersion);
 				embed.setURL("https://github.com/JWOverschot/discord-bot")
