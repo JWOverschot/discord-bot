@@ -31,6 +31,8 @@ All the used node modules are listed in the package.json file.
 - Chooses a random overwatch hero.  
 !ask  
 - Ask any question, most questions wil get you a yes, no or maybe answers.  
+!quote  
+- Shows a random Zenyatta quote.  
 !sing  
 - Zenyatta will sing a song.  
 !play  
