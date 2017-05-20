@@ -112,6 +112,7 @@ bot.on("message", function(message)
 			{
 			    return (new Array(length+1).join(pad)+string).slice(-length);
 			}
+			var finalTime = str_pad_left(hours,'0',2)+':'+str_pad_left(minutes,'0',2)+':'+str_pad_left(seconds,'0',2);
 			message.channel.send("'" + title + "'" +" [" + finalTime + "]" + " added to queue!");
 			console.log(showTime() + " song added to queue");
 			queueTitles.push(title + " [" + finalTime + "]");
