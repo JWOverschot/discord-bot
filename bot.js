@@ -4,7 +4,7 @@ var botName = "Zenyatta";
 var botToken = keys.botKey();
 var googleSearch = keys.googleAPIKey();
 // the rest of the code changes
-var botVersion = "Jisbot 0.2.1";
+var botVersion = "Jisbot 0.2.1.1";
 const Discord = require('discord.js');
 const ytdl = require('ytdl-core');
 const bot = new Discord.Client();
@@ -222,18 +222,30 @@ bot.on("message", function(message)
 					}
 					var server = servers[message.guild.id];
 					server.queue.push(args[1]);
+					
+
 					if (args[1].includes("https://www.youtube.com/watch?v="))
 					{
-						args[1] = args[1].split("https://www.youtube.com/watch?v=").pop();
-					}
-					else if (args[1].includes("y2u.be/"))
-					{
-						args[1] = args[1].split("y2u.be/").pop();
+						var id = args[1].split("https://www.youtube.com/watch?v=").pop();
+						if (id.length > 11)
+						{
+							if (!args[1].includes("&"))
+							{
+								message.channel.send("Invalid link");
+								console.log(showTime() + " invalid link error");
+								return;
+							}
+							else
+							{
+								id = id.split("&").shift();
+							}
+						}
 					}
 					else if (args[1].includes("youtu.be/"))
 					{
-						args[1] = args[1].split("youtu.be/").pop();
+						var id = args[1].split("youtu.be/").pop();
 					}
+
 					ytdl.getInfo(args[1], function(err, info)
 					{
 						if (err) throw err;
