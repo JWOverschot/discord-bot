@@ -40,10 +40,8 @@ var commandsInfo = [
 "Shows first image of google search", // img
 "Plays soup", //soup
 "Shows info over the bot" //info
-];
-var queueTitles = [];
-var queueLengths = [];
-
+]
+var songQueue = []
 function showTime() {
 	var d = new Date()
 	var h = d.getHours().toString()
@@ -66,15 +64,15 @@ function play(connection, message)
 	server.dispatcher = connection.playStream(ytdl(server.queue[0], {filter: "audioonly"}));
 
 	server.queue.shift();
-	queueTitles.shift();
 
 	server.dispatcher.on("end", function()
 	{
-		if (server.queue[0]) {play(connection, message); console.log(showTime() + " playing music");}
 		else {connection.disconnect();
 			bot.user.setGame("Overwatch");
 			console.log(showTime() + " disconnected from voice channel");}
 	});
+		if (server.queue[0]) {play(connection, message); console.log(showTime() + " playing music"); songQueue.shift()}
+			songQueue = []
 }
 
 bot.login(botToken);
@@ -92,27 +90,43 @@ bot.on("message", function(message)
 
 	var args = message.content.substring(prefix.length).split(" ");
 
-	function getVideoInfo(id)
+	
+	function getVideoInfo(yturl)
 	{
+		if (yturl.includes("https://www.youtube.com/watch?v="))
+		{
+			var id = yturl.split("https://www.youtube.com/watch?v=").pop()
+			if (id.length > 11)
+			{
+				id = id.split("&").shift()
+			}
+		}
+		else if (yturl.includes("youtu.be/"))
+		{
+			var id = yturl.split("youtu.be/").pop()
+		}
+		
+		var ytinfoName = "No title"
 		ytdl.getInfo(id, function(err, info)
 		{
-			if (err) throw err;
-			var title = info.title;
-			var length = info.length_seconds;
-			var time = length;
-			var minutes = Math.floor(time / 60);
-			var seconds = time - minutes * 60;
-			var hours = Math.floor(time / 3600);
-			time = time - hours * 3600;
-			function str_pad_left(string,pad,length)
+			if (err) throw err
+			var title = info.title
+			var length = info.length_seconds
+			var time = length
+			var minutes = Math.floor(time / 60)
+			var seconds = time - minutes * 60
+			var hours = Math.floor(time / 3600)
+			time = time - hours * 3600
+			function str_pad_left(string, pad, length)
 			{
 			    return (new Array(length+1).join(pad)+string).slice(-length);
 			}
-			var finalTime = str_pad_left(hours,'0',2)+':'+str_pad_left(minutes,'0',2)+':'+str_pad_left(seconds,'0',2);
-			message.channel.send("'" + title + "'" +" [" + finalTime + "]" + " added to queue!");
-			console.log(showTime() + " song added to queue");
-			queueTitles.push(title + " [" + finalTime + "]");
-		});
+			var finalTime = str_pad_left(hours,'0',2)+':'+str_pad_left(minutes,'0',2)+':'+str_pad_left(seconds,'0',2)
+			ytinfoName = "'" + title + "'" +" [" + finalTime + "]"
+		})
+		setTimeout(function(){if (ytinfoName === "No title") {
+			setTimeout(function(){message.channel.send(ytinfoName + " added to queue!"); songQueue.push(ytinfoName)}, 2000)
+		} else {message.channel.send(ytinfoName + " added to queue!"); songQueue.push(ytinfoName)}}, 2000)
 	}
 
 	switch (args[0].toLowerCase())
