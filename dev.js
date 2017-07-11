@@ -149,9 +149,9 @@ bot.on("message", function(message)
 			break
 		//ping
 		case commands[2]:
-			message.channel.send("pong " + bot.ping + " ms");
-			console.log(showTime() + " bot ping "  + bot.ping + " ms");
-			break;
+			message.channel.send("pong " + Math.floor(bot.ping) + " ms")
+			console.log(showTime() + " bot ping "  + bot.ping + " ms")
+			break
 		//help
 		case commands[3]:
 			var embed = new Discord.RichEmbed()
