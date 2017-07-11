@@ -1,8 +1,8 @@
-// specific for dev bot
-const keys = require('./6f97a6a13d775ff617e6e9607c65df.js')
-var botName = "Devyatta"
-var botToken = keys.devBotKey()
-var googleSearch = keys.googleAPIKey()
+// specific for public bot
+const keys = require('./6f97a6a13d775ff617e6e9607c65df.js');
+var botName = "Zenyatta";
+var botToken = keys.botKey();
+var googleSearch = keys.googleAPIKey();
 // the rest of the code changes
 var botVersion = "Jisbot 0.3.0"
 const Discord = require('discord.js')
