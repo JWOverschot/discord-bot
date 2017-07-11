@@ -151,12 +151,12 @@ bot.on("message", function(message)
 			break;
 		//chooseow
 		case commands[4]:
-			var owCharacters = ['Genji', 'McCree', 'Pharah', 'Reaper', 'Soldier: 76', 'Sombra', 'Tracer', 'Bastion', 'Hanzo', 'Junkrat', 'Mei', 'Torbjörn', 'Widowmaker', 'D.VA', 'Orisa', 'Reinhardt', 'Roadhog', 'Winston', 'Zarya', 'Ana', 'Lúcio', 'Mercy', 'Symmetra', 'Zenyatta'];
-			var randomNum = Math.floor(Math.random() * owCharacters.length);
-			var chooseow = owCharacters[randomNum];
-			message.reply("Your hero is " + chooseow);
-			console.log(showTime() + " ow hero send");
-			break;
+			var owCharacters = ['Doomfist', 'Genji', 'McCree', 'Pharah', 'Reaper', 'Soldier: 76', 'Sombra', 'Tracer', 'Bastion', 'Hanzo', 'Junkrat', 'Mei', 'Torbjörn', 'Widowmaker', 'D.VA', 'Orisa', 'Reinhardt', 'Roadhog', 'Winston', 'Zarya', 'Ana', 'Lúcio', 'Mercy', 'Symmetra', 'Zenyatta']
+			var randomNum = Math.floor(Math.random() * owCharacters.length)
+			var chooseow = owCharacters[randomNum]
+			message.reply("Your hero is " + chooseow)
+			console.log(showTime() + " ow hero send")
+			break
 		//ask
 		case commands[5]:
 			var answers = ['Yes', 'No', 'Maybe'];
