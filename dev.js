@@ -13,6 +13,7 @@ const youTube = new YouTube();
 youTube.setKey(googleSearch);
 const googleIms = require('google-ims');
 let client = googleIms('016227928627283430649:sy5nfspjpus', googleSearch);
+var botVersion = "Jisbot 0.3.0"
 require('crashreporter').configure({
     outDir: ('./crash_logs'), // default to cwd 
     exitOnCrash: true, // if you want that crash reporter exit(1) for you, default to true, 
@@ -44,23 +45,16 @@ var queueTitles = [];
 var queueLengths = [];
 
 function showTime() {
-	var d = new Date();
-	var h = d.getHours().toString();
-	var m = d.getMinutes().toString();
-	var s = d.getSeconds().toString();
-	if (h.length <= 1)
+	var d = new Date()
+	var h = d.getHours().toString()
+	var m = d.getMinutes().toString()
+	var s = d.getSeconds().toString()
+	function str_pad_left(string,pad,length)
 	{
-		h = '0' + h;
+	    return (new Array(length+1).join(pad)+string).slice(-length)
 	}
-	if (m.length <= 1)
-	{
-		m = '0' + m;
-	}
-	if (s.length <= 1)
-	{
-		s = '0' + s;
-	}
-	return h + ":" + m + ":" + s;
+	var finalTime = str_pad_left(h,'0',2)+':'+str_pad_left(m,'0',2)+':'+str_pad_left(s,'0',2)
+	return finalTime
 }
 
 //changes only in one server
