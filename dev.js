@@ -350,7 +350,7 @@ bot.on("message", function(message)
 				console.log(showTime() + " no queue index selected error send")
 				return
 			}
-			if (args[1] == 0)
+			if (args[1] <= 0)
 			{
 				message.channel.send("Invalid number.")
 				console.log(showTime() + " invalid number error")
