@@ -414,7 +414,11 @@ bot.on("message", function(message)
 			songQueue.forEach(
 			function (item, index)
 			{
-				embed.addField(songQueue[i], index)
+				if (index === 0)
+				{
+					index = 'Now Playing'
+				}
+				embed.addField(index, songQueue[i])
 				i++
 			})
 			embed.setColor(0x3399ff)
