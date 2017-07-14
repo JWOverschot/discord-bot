@@ -284,6 +284,7 @@ bot.on("message", function(message)
 			else
 			{
 				youTube.search(message.content.split("!play").pop(), 1, function(error, result)
+				youTube.addParam('type', 'video')
 				{
 					if (error)
 					{
