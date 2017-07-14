@@ -320,8 +320,26 @@ bot.on("message", function(message)
 		//skip
 		case commands[9]:
 			var server = servers[message.guild.id]
-			if (server.dispatcher) server.dispatcher.end()
-			console.log(showTime() + " song skiped")
+			if (!message.member.voiceChannel)
+			{
+				message.channel.send('You must be in a voice channel.')
+				console.log(showTime() + ' play not in channel error send')
+				return
+			}
+			if (message.guild.voiceConnection)
+			{
+				if (server.dispatcher)
+				{
+					server.dispatcher.end()
+				}
+				console.log(showTime() + ' song skiped')
+			}
+			else
+			{
+				message.channel.send('You can\'t stop nothing.')
+				console.log(showTime() + ' nothing to stop error send')
+				return
+			}
 			break
 		//remove
 		case commands[10]:
