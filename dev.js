@@ -5,6 +5,7 @@ var botToken = keys.devBotKey()
 var googleSearch = keys.googleAPIKey()
 // the rest of the code changes
 var botVersion = "Jisbot 0.3.0"
+const botVersion = 'Jisbot 0.3.1'
 const Discord = require('discord.js')
 const ytdl = require('ytdl-core')
 const bot = new Discord.Client()
@@ -210,8 +211,8 @@ bot.on("message", function(message)
 				return
 			}
 			if (!servers[message.guild.id]) servers[message.guild.id] = { queue: [] }
-			var songs = ["https://www.youtube.com/watch?v=aiWA7gO_cnk", "https://www.youtube.com/watch?v=mRJrXRCq3w8"]
-			var randomNum = Math.floor(Math.random() * songs)
+			const songs = ['https://www.youtube.com/watch?v=aiWA7gO_cnk', 'https://www.youtube.com/watch?v=mRJrXRCq3w8']
+			var randomNum = Math.floor(Math.random() * songs.length)
 			var song = songs[randomNum]
 			var server = servers[message.guild.id]
 			server.queue.push(song)
