@@ -299,6 +299,60 @@ bot.on('message', function(message)
 						console.log(showTime() + ' playing in voice channel')
 					})
 				}
+				//playlists
+				if (args[1].includes('www.youtube.com/playlist?list='))
+				{
+					var playListID = args[1].split('https://www.youtube.com/playlist?list=').pop()
+					if (playListID.length < 34)
+					{
+						message.channel.send('Link incomplete.')
+						console.log(showTime() + ' link incomplete')
+						return
+					}
+					if (playListID.length > 34)
+					{
+						playListID = playListID.split('&').shift()
+					}
+					youTube.addParam('maxResults', '50');
+					youTube.getPlayListsItemsById(playListID, function(error, result)
+					{
+						if (error)
+						{
+							console.log(showTime() + ' ' + error)
+							message.channel.send('This playlist is probably private.')
+						}
+						else
+						{
+							var playListLength = result.pageInfo.totalResults
+							var server = servers[message.guild.id]
+
+							if (playListLength > 50)
+							{
+								message.channel.send('Playlists with more than 50 videos are not allowed.')
+								console.log(showTime() + ' surpassed the limit of 50 item in a playlist')
+								return
+							}
+							else
+							{
+								for (var i = 0; i < playListLength; i++)
+								{
+									var ytVideoId = result.items[i].contentDetails.videoId
+									args[1] = 'https://www.youtube.com/watch?v=' + ytVideoId
+
+									server.queue.push(args[1])
+									console.log(showTime() + ' song added to queue')
+									getVideoInfo(args[1])
+									if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection)
+									{
+										play(connection, message)
+										bot.user.setGame('Music')
+										console.log(showTime() + ' playing in voice channel')
+									})
+								}
+							}
+						}
+					})
+				}
 				else
 				{
 					message.channel.send('unsupported link, only youtube links work.')
