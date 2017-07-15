@@ -31,7 +31,7 @@ const commandsInfo = [
 'Ask any question, most questions wil get you a yes, no or maybe answers', //ask
 'Shows a random Zenyatta quote', //quote
 'Zenyatta will sing a song', //sing
-'Will play the YouTube link or YouTube search result after it. If there is already a song playing it will add it to the queue', //play
+'Will play the YouTube (video or playlist) link or YouTube search result after it. If there is already a song playing it will add it to the queue', //play
 'Will skip the current song', //skip
 'Write the number corresponding to the song in the queue to remove it', //remove
 'Will stop the music and clear the queue', //stop

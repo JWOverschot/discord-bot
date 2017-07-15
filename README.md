@@ -36,7 +36,7 @@ All the used node modules are listed in the package.json file.
 !sing  
 - Zenyatta will sing a song.  
 !play  
-- Will play the YouTube link or YouTube search result after it. If there is already a song playing it will add it to the queue.  
+- Will play the YouTube (video or playlist) link or YouTube search result after it. If there is already a song playing it will add it to the queue.  
 !skip  
 - Will skip the current song.  
 !remove  
@@ -50,7 +50,7 @@ All the used node modules are listed in the package.json file.
 !soup  
 - Plays soup.  
 !info
-- Shows info over the bot
+- Shows info over the bot.
 
 ---
 
