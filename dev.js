@@ -174,7 +174,7 @@ bot.on('message', function(message)
 			break
 		//ping
 		case commands[2]:
-			message.channel.send('pong ' + Math.floor(bot.ping) + ' ms')
+			message.channel.send('Pong ' + Math.floor(bot.ping) + ' ms.')
 			console.log(showTime() + ' bot ping '  + bot.ping + ' ms')
 			break
 		//help
@@ -204,14 +204,14 @@ bot.on('message', function(message)
 			var answer = answers[randomNum]
 			if (message.content === '!ask what time is it?' || message.content === '!ask what is the time?' || message.content === '!ask time')
 			{
-				message.channel.send('it\'s ' + showTime())
+				message.channel.send('It\'s ' + showTime() + '.')
 				console.log(showTime() + ' time send')
 			}
 			else
 			{
 				if (args[1])
 				{
-					message.channel.send(answer)
+					message.channel.send(answer + '.')
 					console.log(showTime() + ' answer send')
 				}
 				else
@@ -355,7 +355,7 @@ bot.on('message', function(message)
 				}
 				else
 				{
-					message.channel.send('unsupported link, only youtube links work.')
+					message.channel.send('Unsupported link, only youtube links work.')
 					console.log(showTime() + ' not a youtube link')
 					return
 				}
@@ -375,7 +375,7 @@ bot.on('message', function(message)
 					{
 						if (result.items[0] == undefined  || result.items[0].id.videoId == undefined)
 						{
-							message.channel.send('No search results')
+							message.channel.send('No search results.')
 							console.log(showTime() + ' no search results')
 						}
 						else
@@ -560,7 +560,7 @@ bot.on('message', function(message)
 			break
 
 		default:
-			message.channel.send('"' + message.content + '"' + ' command does not exist, try !help')
+			message.channel.send('"' + message.content + '"' + ' command does not exist, try !help.')
 			console.log(showTime() + ' error command does not exist')
 	}
 })
