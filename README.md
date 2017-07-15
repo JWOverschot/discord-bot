@@ -16,41 +16,40 @@ All the used node modules are listed in the package.json file.
 - Choose a random overwatch hero.
 - Answer yes or no questions.
 
-## Bot commands
+## Bot commands  
 
-
-!hello  
-- Greetings message.  
-!bye  
-- Farewell message.  
-!ping  
-- Shows bot's ping.  
-!help  
-- Shows this message.  
-!chooseow  
-- Chooses a random overwatch hero.  
-!ask  
-- Ask any question, most questions wil get you a yes, no or maybe answers.  
-!quote  
-- Shows a random Zenyatta quote.  
-!sing  
-- Zenyatta will sing a song.  
-!play  
-- Will play the YouTube (video or playlist) link or YouTube search result after it. If there is already a song playing it will add it to the queue.  
-!skip  
-- Will skip the current song.  
-!remove  
-- Write the number corresponding to the song in the queue to remove it.  
-!stop  
-- Will stop the music and clear the queue.  
-!queue  
-- Shows the songs in the queue.  
-!img  
-- Shows first image of google search.  
-!soup  
-- Plays soup.  
-!info
-- Shows info over the bot.
+- !hello  
+Greetings message.  
+- !bye  
+Farewell message.  
+- !ping  
+Shows bot's ping.  
+- !help  
+Shows this message.  
+- !chooseow  
+Chooses a random overwatch hero.  
+- !ask  
+Ask any question, most questions wil get you a yes, no or maybe answers.  
+- !quote  
+Shows a random Zenyatta quote.  
+- !sing  
+Zenyatta will sing a song.  
+- !play  
+Will play the YouTube (video or playlist) link or YouTube search result after it. If there is already a song playing it will add it to the queue.  
+- !skip  
+Will skip the current song.  
+- !remove  
+Write the number corresponding to the song in the queue to remove it.  
+- !stop  
+Will stop the music and clear the queue.  
+- !queue  
+Shows the songs in the queue.  
+- !img  
+Shows first image of google search.  
+- !soup  
+Plays soup.  
+- !info
+Shows info over the bot.
 
 ---
 
