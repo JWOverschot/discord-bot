@@ -4,7 +4,7 @@ const botName = 'Devyatta'
 const botToken = keys.devBotKey()
 const googleSearch = keys.googleAPIKey()
 // the rest of the code changes
-const botVersion = 'Jisbot 0.3.1'
+const botVersion = 'Jisbot 0.4.0'
 const Discord = require('discord.js')
 const ytdl = require('ytdl-core')
 const bot = new Discord.Client()
@@ -102,6 +102,12 @@ bot.on('message', function(message)
 		if (yturl.includes('https://www.youtube.com/watch?v='))
 		{
 			var id = yturl.split('https://www.youtube.com/watch?v=').pop()
+			if (id.length < 11)
+			{
+				message.channel.send('Link incomplete.')
+				console.log(showTime() + ' link incomplete')
+				return
+			}
 			if (id.length > 11)
 			{
 				id = id.split('&').shift()
