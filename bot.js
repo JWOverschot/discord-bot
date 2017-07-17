@@ -4,7 +4,7 @@ const botName = "Zenyatta";
 const botToken = keys.botKey();
 const googleSearch = keys.googleAPIKey();
 // the rest of the code changes
-const botVersion = 'Jisbot 0.3.1'
+const botVersion = 'Jisbot 0.4.0'
 const Discord = require('discord.js')
 const ytdl = require('ytdl-core')
 const bot = new Discord.Client()
@@ -21,24 +21,43 @@ require('crashreporter').configure({
 
 const prefix = '!'
 
-const commands = [/*0*/'hello', /*1*/'bye', /*2*/'ping', /*3*/'help', /*4*/'chooseow', /*5*/'ask', /*6*/'quote', /*7*/'sing', /*8*/'play', /*9*/'skip', /*10*/'remove', /*11*/'stop', /*12*/'queue', /*13*/'img', /*14*/'soup', /*15*/'info']
+const commands = [
+	/*0*/'hello',
+	/*1*/'bye',
+	/*2*/'ping',
+	/*3*/'help',
+	/*4*/'chooseow',
+	/*5*/'ask',
+	/*6*/'say',
+	/*7*/'quote',
+	/*8*/'sing',
+	/*9*/'play',
+	/*10*/'skip',
+	/*11*/'remove',
+	/*12*/'stop',
+	/*13*/'queue',
+	/*14*/'img',
+	/*15*/'soup',
+	/*16*/'info'
+]
 const commandsInfo = [
-'Greetings message.', //hello
-'Farewell message', //bye
-'Shows bot\'s ping', //ping
-'Shows this message', //help
-'Chooses a random overwatch hero', //chooseow
-'Ask any question, most questions wil get you a yes, no or maybe answers', //ask
-'Shows a random Zenyatta quote', //quote
-'Zenyatta will sing a song', //sing
-'Will play the YouTube link or YouTube search result after it. If there is already a song playing it will add it to the queue', //play
-'Will skip the current song', //skip
-'Write the number corresponding to the song in the queue to remove it', //remove
-'Will stop the music and clear the queue', //stop
-'Shows the songs in the queue', //queue
-'Shows first image of google search', // img
-'Plays soup', //soup
-'Shows info over the bot' //info
+	'Greetings message.', //hello
+	'Farewell message', //bye
+	'Shows bot\'s ping', //ping
+	'Shows this message', //help
+	'Chooses a random overwatch hero', //chooseow
+	'Ask any question, most questions wil get you a yes, no or maybe answers', //ask
+	'Say something to the bot', //say
+	'Shows a random Zenyatta quote', //quote
+	'Zenyatta will sing a song', //sing
+	'Will play the YouTube (video or playlist) link or YouTube search result after it. If there is already a song playing it will add it to the queue', //play
+	'Will skip the current song', //skip
+	'Write the number corresponding to the song in the queue to remove it', //remove
+	'Will stop the music and clear the queue', //stop
+	'Shows the songs in the queue', //queue
+	'Shows first image of google search', // img
+	'Plays soup', //soup
+	'Shows info over the bot' //info
 ]
 var songQueue = []
 function showTime() {
@@ -95,13 +114,17 @@ bot.on('message', function(message)
 
 	var args = message.content.substring(prefix.length).split(' ')
 
-
-	
 	function getVideoInfo(yturl)
 	{
 		if (yturl.includes('https://www.youtube.com/watch?v='))
 		{
 			var id = yturl.split('https://www.youtube.com/watch?v=').pop()
+			if (id.length < 11)
+			{
+				message.channel.send('Link incomplete.')
+				console.log(showTime() + ' link incomplete')
+				return
+			}
 			if (id.length > 11)
 			{
 				id = id.split('&').shift()
@@ -168,7 +191,7 @@ bot.on('message', function(message)
 			break
 		//ping
 		case commands[2]:
-			message.channel.send('pong ' + Math.floor(bot.ping) + ' ms')
+			message.channel.send('Pong ' + Math.floor(bot.ping) + ' ms.')
 			console.log(showTime() + ' bot ping '  + bot.ping + ' ms')
 			break
 		//help
@@ -185,7 +208,33 @@ bot.on('message', function(message)
 			break
 		//chooseow
 		case commands[4]:
-			const owCharacters = ['Doomfist', 'Genji', 'McCree', 'Pharah', 'Reaper', 'Soldier: 76', 'Sombra', 'Tracer', 'Bastion', 'Hanzo', 'Junkrat', 'Mei', 'Torbjörn', 'Widowmaker', 'D.VA', 'Orisa', 'Reinhardt', 'Roadhog', 'Winston', 'Zarya', 'Ana', 'Lúcio', 'Mercy', 'Symmetra', 'Zenyatta']
+			const owCharacters = [
+				'Doomfist',
+				'Genji',
+				'McCree',
+				'Pharah',
+				'Reaper',
+				'Soldier: 76',
+				'Sombra',
+				'Tracer',
+				'Bastion',
+				'Hanzo',
+				'Junkrat',
+				'Mei',
+				'Torbjörn',
+				'Widowmaker',
+				'D.VA',
+				'Orisa',
+				'Reinhardt',
+				'Roadhog',
+				'Winston',
+				'Zarya',
+				'Ana',
+				'Lúcio',
+				'Mercy',
+				'Symmetra',
+				'Zenyatta'
+			]
 			var randomNum = Math.floor(Math.random() * owCharacters.length)
 			var chooseow = owCharacters[randomNum]
 			message.reply('Your hero is ' + chooseow)
@@ -193,19 +242,20 @@ bot.on('message', function(message)
 			break
 		//ask
 		case commands[5]:
+			var msgCont = message.content.split('!ask').pop().toLowerCase()
 			const answers = ['Yes', 'No', 'Maybe']
 			var randomNum = Math.floor(Math.random() * answers.length)
 			var answer = answers[randomNum]
-			if (message.content === '!ask what time is it?' || message.content === '!ask what is the time?' || message.content === '!ask time')
+			if (msgCont.includes('what time is it') || msgCont.includes('what is the time') || msgCont.includes('time'))
 			{
-				message.channel.send('it\'s ' + showTime())
+				message.channel.send('It\'s ' + showTime() + '.')
 				console.log(showTime() + ' time send')
 			}
 			else
 			{
 				if (args[1])
 				{
-					message.channel.send(answer)
+					message.channel.send(answer + '.')
 					console.log(showTime() + ' answer send')
 				}
 				else
@@ -215,16 +265,59 @@ bot.on('message', function(message)
 				}
 			}
 			break
-		//quote
+		//say
 		case commands[6]:
-			const quotes = ['We are in harmony.', 'Death is whimsical today.', 'Do I think? Does a submarine swim?', 'Free your mind.', 'Hello, world!', 'I dreamt I was a butterfly.', 'I think, therefore I am.', 'I will not juggle.', 'Life is more than a series of ones and zeroes.', 'Peace and blessings be upon you all.', 'The Iris embraces you.', '	Always strive for improvement.', 'Trick or treat?', 'No snowflake ever falls in the wrong place.', 'Every rooster crows in its own pen.', 'Walk along the path to enlightenment.', 'If you do not change direction, you may end up where you are headed.']
+			var msgCont = message.content.split('!say').pop().toLowerCase()
+			const responses = ['I don\'t know what you mean with ' + msgCont, 'I don\'t have many responses jet']
+			var randomNum = Math.floor(Math.random() * responses.length)
+			var response = responses[randomNum]
+			
+			if (msgCont.includes('i need healing'))
+			{
+				message.channel.send('Come here for healing.')
+				console.log(showTime() + ' response send')
+			}
+			else
+			{
+				if (args[1])
+				{
+					message.channel.send(response + '.')
+					console.log(showTime() + ' response send')
+				}
+				else
+				{
+					message.channel.send('You didn\'t say anything.')
+					console.log(showTime() + ' say error send')
+				}
+			}
+			break
+		//quote
+		case commands[7]:
+			const quotes = [
+				'We are in harmony.',
+				'Death is whimsical today.',
+				'Do I think? Does a submarine swim?',
+				'Free your mind.', 'Hello, world!',
+				'I dreamt I was a butterfly.',
+				'I think, therefore I am.',
+				'I will not juggle.',
+				'Life is more than a series of ones and zeroes.',
+				'Peace and blessings be upon you all.',
+				'The Iris embraces you.',
+				'Always strive for improvement.',
+				'Trick or treat?',
+				'No snowflake ever falls in the wrong place.',
+				'Every rooster crows in its own pen.',
+				'Walk along the path to enlightenment.',
+				'If you do not change direction, you may end up where you are headed.'
+			]
 			var randomNum = Math.floor(Math.random() * quotes.length)
 			var quote = quotes[randomNum]
 			message.channel.send(quote)
 			console.log(showTime() + ' quote send')
 			break
 		//sing
-		case commands[7]:
+		case commands[8]:
 			if (!message.member.voiceChannel)
 			{
 				message.channel.send('You must be in a voice channel.')
@@ -248,7 +341,7 @@ bot.on('message', function(message)
 			})
 			break
 		//play
-		case commands[8]:
+		case commands[9]:
 			if (!args[1])
 			{
 				message.channel.send('Provide a link or song title and artist.')
@@ -293,9 +386,63 @@ bot.on('message', function(message)
 						console.log(showTime() + ' playing in voice channel')
 					})
 				}
+				//playlists
+				if (args[1].includes('www.youtube.com/playlist?list='))
+				{
+					var playListID = args[1].split('https://www.youtube.com/playlist?list=').pop()
+					if (playListID.length < 34)
+					{
+						message.channel.send('Link incomplete.')
+						console.log(showTime() + ' link incomplete')
+						return
+					}
+					if (playListID.length > 34)
+					{
+						playListID = playListID.split('&').shift()
+					}
+					youTube.addParam('maxResults', '50');
+					youTube.getPlayListsItemsById(playListID, function(error, result)
+					{
+						if (error)
+						{
+							console.log(showTime() + ' ' + error)
+							message.channel.send('This playlist is probably private.')
+						}
+						else
+						{
+							var playListLength = result.pageInfo.totalResults
+							var server = servers[message.guild.id]
+
+							if (playListLength > 50)
+							{
+								message.channel.send('Playlists with more than 50 videos are not allowed.')
+								console.log(showTime() + ' surpassed the limit of 50 item in a playlist')
+								return
+							}
+							else
+							{
+								for (var i = 0; i < playListLength; i++)
+								{
+									var ytVideoId = result.items[i].contentDetails.videoId
+									args[1] = 'https://www.youtube.com/watch?v=' + ytVideoId
+
+									server.queue.push(args[1])
+									console.log(showTime() + ' song added to queue')
+									getVideoInfo(args[1])
+									if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection)
+									{
+										play(connection, message)
+										bot.user.setGame('Music')
+										console.log(showTime() + ' playing in voice channel')
+									})
+								}
+							}
+						}
+					})
+				}
 				else
 				{
-					message.channel.send('unsupported link, only youtube links work.')
+					message.channel.send('Unsupported link, only youtube links work.')
 					console.log(showTime() + ' not a youtube link')
 					return
 				}
@@ -315,7 +462,7 @@ bot.on('message', function(message)
 					{
 						if (result.items[0] == undefined  || result.items[0].id.videoId == undefined)
 						{
-							message.channel.send('No search results')
+							message.channel.send('No search results.')
 							console.log(showTime() + ' no search results')
 						}
 						else
@@ -338,7 +485,7 @@ bot.on('message', function(message)
 			}
 			break
 		//skip
-		case commands[9]:
+		case commands[10]:
 			var server = servers[message.guild.id]
 			if (!message.member.voiceChannel)
 			{
@@ -362,7 +509,7 @@ bot.on('message', function(message)
 			}
 			break
 		//remove
-		case commands[10]:
+		case commands[11]:
 			var server = servers[message.guild.id]
 			if (!args[1])
 			{
@@ -395,7 +542,7 @@ bot.on('message', function(message)
 			console.log(showTime() + ' song removed from queue')
 			break
 		//stop
-		case commands[11]:
+		case commands[12]:
 			var server = servers[message.guild.id]
 			if (!message.member.voiceChannel)
 			{
@@ -420,7 +567,7 @@ bot.on('message', function(message)
 			}
 			break
 		//queue
-		case commands[12]:
+		case commands[13]:
 			var server = servers[message.guild.id]
 			if (!server || !server.queue.length > 0)
 			{
@@ -445,7 +592,7 @@ bot.on('message', function(message)
 			console.log(showTime() + ' queue list send')
 			break
 		//img
-		case commands[13]:
+		case commands[14]:
 			if (!args[1])
 			{
 				message.channel.send('No search query.')
@@ -469,7 +616,7 @@ bot.on('message', function(message)
 			})
 			break
 		//soup
-		case commands[14]:
+		case commands[15]:
 			if (!message.member.voiceChannel)
 			{
 				message.channel.send('You must be in a voice channel.')
@@ -489,7 +636,7 @@ bot.on('message', function(message)
 			})
 			break
 		//info
-		case commands[15]:
+		case commands[16]:
 				var embed = new Discord.RichEmbed()
 				embed.setTitle(botVersion)
 				embed.setURL('https://github.com/JWOverschot/discord-bot')
@@ -500,7 +647,7 @@ bot.on('message', function(message)
 			break
 
 		default:
-			message.channel.send('"' + message.content + '"' + ' command does not exist, try !help')
+			message.channel.send('"' + message.content + '"' + ' command does not exist, try !help.')
 			console.log(showTime() + ' error command does not exist')
 	}
 })
