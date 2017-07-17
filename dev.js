@@ -22,6 +22,7 @@ require('crashreporter').configure({
 const prefix = '!'
 
 const commands = [/*0*/'hello', /*1*/'bye', /*2*/'ping', /*3*/'help', /*4*/'chooseow', /*5*/'ask', /*6*/'quote', /*7*/'sing', /*8*/'play', /*9*/'skip', /*10*/'remove', /*11*/'stop', /*12*/'queue', /*13*/'img', /*14*/'soup', /*15*/'info']
+	/*6*/'say',
 const commandsInfo = [
 'Greetings message.', //hello
 'Farewell message', //bye
@@ -39,6 +40,7 @@ const commandsInfo = [
 'Shows first image of google search', // img
 'Plays soup', //soup
 'Shows info over the bot' //info
+	'Say something to the bot', //say
 ]
 var songQueue = []
 function showTime() {
@@ -221,16 +223,59 @@ bot.on('message', function(message)
 				}
 			}
 			break
-		//quote
+		//say
 		case commands[6]:
-			const quotes = ['We are in harmony.', 'Death is whimsical today.', 'Do I think? Does a submarine swim?', 'Free your mind.', 'Hello, world!', 'I dreamt I was a butterfly.', 'I think, therefore I am.', 'I will not juggle.', 'Life is more than a series of ones and zeroes.', 'Peace and blessings be upon you all.', 'The Iris embraces you.', '	Always strive for improvement.', 'Trick or treat?', 'No snowflake ever falls in the wrong place.', 'Every rooster crows in its own pen.', 'Walk along the path to enlightenment.', 'If you do not change direction, you may end up where you are headed.']
+			var msgCont = message.content.split('!say').pop().toLowerCase()
+			const responses = ['I don\'t know what you mean with ' + msgCont, 'I don\'t have many responses jet']
+			var randomNum = Math.floor(Math.random() * responses.length)
+			var response = responses[randomNum]
+			
+			if (msgCont.includes('i need healing'))
+			{
+				message.channel.send('Come here for healing.')
+				console.log(showTime() + ' response send')
+			}
+			else
+			{
+				if (args[1])
+				{
+					message.channel.send(response + '.')
+					console.log(showTime() + ' response send')
+				}
+				else
+				{
+					message.channel.send('You didn\'t say anything.')
+					console.log(showTime() + ' say error send')
+				}
+			}
+			break
+		//quote
+		case commands[7]:
+			const quotes = [
+				'We are in harmony.',
+				'Death is whimsical today.',
+				'Do I think? Does a submarine swim?',
+				'Free your mind.', 'Hello, world!',
+				'I dreamt I was a butterfly.',
+				'I think, therefore I am.',
+				'I will not juggle.',
+				'Life is more than a series of ones and zeroes.',
+				'Peace and blessings be upon you all.',
+				'The Iris embraces you.',
+				'Always strive for improvement.',
+				'Trick or treat?',
+				'No snowflake ever falls in the wrong place.',
+				'Every rooster crows in its own pen.',
+				'Walk along the path to enlightenment.',
+				'If you do not change direction, you may end up where you are headed.'
+			]
 			var randomNum = Math.floor(Math.random() * quotes.length)
 			var quote = quotes[randomNum]
 			message.channel.send(quote)
 			console.log(showTime() + ' quote send')
 			break
 		//sing
-		case commands[7]:
+		case commands[8]:
 			if (!message.member.voiceChannel)
 			{
 				message.channel.send('You must be in a voice channel.')
@@ -254,7 +299,7 @@ bot.on('message', function(message)
 			})
 			break
 		//play
-		case commands[8]:
+		case commands[9]:
 			if (!args[1])
 			{
 				message.channel.send('Provide a link or song title and artist.')
@@ -398,7 +443,7 @@ bot.on('message', function(message)
 			}
 			break
 		//skip
-		case commands[9]:
+		case commands[10]:
 			var server = servers[message.guild.id]
 			if (!message.member.voiceChannel)
 			{
@@ -422,7 +467,7 @@ bot.on('message', function(message)
 			}
 			break
 		//remove
-		case commands[10]:
+		case commands[11]:
 			var server = servers[message.guild.id]
 			if (!args[1])
 			{
@@ -455,7 +500,7 @@ bot.on('message', function(message)
 			console.log(showTime() + ' song removed from queue')
 			break
 		//stop
-		case commands[11]:
+		case commands[12]:
 			var server = servers[message.guild.id]
 			if (!message.member.voiceChannel)
 			{
@@ -480,7 +525,7 @@ bot.on('message', function(message)
 			}
 			break
 		//queue
-		case commands[12]:
+		case commands[13]:
 			var server = servers[message.guild.id]
 			if (!server || !server.queue.length > 0)
 			{
@@ -505,7 +550,7 @@ bot.on('message', function(message)
 			console.log(showTime() + ' queue list send')
 			break
 		//img
-		case commands[13]:
+		case commands[14]:
 			if (!args[1])
 			{
 				message.channel.send('No search query.')
@@ -529,7 +574,7 @@ bot.on('message', function(message)
 			})
 			break
 		//soup
-		case commands[14]:
+		case commands[15]:
 			if (!message.member.voiceChannel)
 			{
 				message.channel.send('You must be in a voice channel.')
@@ -549,7 +594,7 @@ bot.on('message', function(message)
 			})
 			break
 		//info
-		case commands[15]:
+		case commands[16]:
 				var embed = new Discord.RichEmbed()
 				embed.setTitle(botVersion)
 				embed.setURL('https://github.com/JWOverschot/discord-bot')

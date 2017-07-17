@@ -30,6 +30,8 @@ Shows this message.
 Chooses a random overwatch hero.  
 - !ask  
 Ask any question, most questions wil get you a yes, no or maybe answers.  
+- !say  
+Say something to the bot.    
 - !quote  
 Shows a random Zenyatta quote.  
 - !sing  
