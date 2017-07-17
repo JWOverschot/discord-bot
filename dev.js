@@ -21,26 +21,43 @@ require('crashreporter').configure({
 
 const prefix = '!'
 
-const commands = [/*0*/'hello', /*1*/'bye', /*2*/'ping', /*3*/'help', /*4*/'chooseow', /*5*/'ask', /*6*/'quote', /*7*/'sing', /*8*/'play', /*9*/'skip', /*10*/'remove', /*11*/'stop', /*12*/'queue', /*13*/'img', /*14*/'soup', /*15*/'info']
+const commands = [
+	/*0*/'hello',
+	/*1*/'bye',
+	/*2*/'ping',
+	/*3*/'help',
+	/*4*/'chooseow',
+	/*5*/'ask',
 	/*6*/'say',
+	/*7*/'quote',
+	/*8*/'sing',
+	/*9*/'play',
+	/*10*/'skip',
+	/*11*/'remove',
+	/*12*/'stop',
+	/*13*/'queue',
+	/*14*/'img',
+	/*15*/'soup',
+	/*16*/'info'
+]
 const commandsInfo = [
-'Greetings message.', //hello
-'Farewell message', //bye
-'Shows bot\'s ping', //ping
-'Shows this message', //help
-'Chooses a random overwatch hero', //chooseow
-'Ask any question, most questions wil get you a yes, no or maybe answers', //ask
-'Shows a random Zenyatta quote', //quote
-'Zenyatta will sing a song', //sing
-'Will play the YouTube (video or playlist) link or YouTube search result after it. If there is already a song playing it will add it to the queue', //play
-'Will skip the current song', //skip
-'Write the number corresponding to the song in the queue to remove it', //remove
-'Will stop the music and clear the queue', //stop
-'Shows the songs in the queue', //queue
-'Shows first image of google search', // img
-'Plays soup', //soup
-'Shows info over the bot' //info
+	'Greetings message.', //hello
+	'Farewell message', //bye
+	'Shows bot\'s ping', //ping
+	'Shows this message', //help
+	'Chooses a random overwatch hero', //chooseow
+	'Ask any question, most questions wil get you a yes, no or maybe answers', //ask
 	'Say something to the bot', //say
+	'Shows a random Zenyatta quote', //quote
+	'Zenyatta will sing a song', //sing
+	'Will play the YouTube (video or playlist) link or YouTube search result after it. If there is already a song playing it will add it to the queue', //play
+	'Will skip the current song', //skip
+	'Write the number corresponding to the song in the queue to remove it', //remove
+	'Will stop the music and clear the queue', //stop
+	'Shows the songs in the queue', //queue
+	'Shows first image of google search', // img
+	'Plays soup', //soup
+	'Shows info over the bot' //info
 ]
 var songQueue = []
 function showTime() {
@@ -97,8 +114,6 @@ bot.on('message', function(message)
 
 	var args = message.content.substring(prefix.length).split(' ')
 
-
-	
 	function getVideoInfo(yturl)
 	{
 		if (yturl.includes('https://www.youtube.com/watch?v='))
@@ -193,7 +208,33 @@ bot.on('message', function(message)
 			break
 		//chooseow
 		case commands[4]:
-			const owCharacters = ['Doomfist', 'Genji', 'McCree', 'Pharah', 'Reaper', 'Soldier: 76', 'Sombra', 'Tracer', 'Bastion', 'Hanzo', 'Junkrat', 'Mei', 'Torbjörn', 'Widowmaker', 'D.VA', 'Orisa', 'Reinhardt', 'Roadhog', 'Winston', 'Zarya', 'Ana', 'Lúcio', 'Mercy', 'Symmetra', 'Zenyatta']
+			const owCharacters = [
+				'Doomfist',
+				'Genji',
+				'McCree',
+				'Pharah',
+				'Reaper',
+				'Soldier: 76',
+				'Sombra',
+				'Tracer',
+				'Bastion',
+				'Hanzo',
+				'Junkrat',
+				'Mei',
+				'Torbjörn',
+				'Widowmaker',
+				'D.VA',
+				'Orisa',
+				'Reinhardt',
+				'Roadhog',
+				'Winston',
+				'Zarya',
+				'Ana',
+				'Lúcio',
+				'Mercy',
+				'Symmetra',
+				'Zenyatta'
+			]
 			var randomNum = Math.floor(Math.random() * owCharacters.length)
 			var chooseow = owCharacters[randomNum]
 			message.reply('Your hero is ' + chooseow)
@@ -201,10 +242,11 @@ bot.on('message', function(message)
 			break
 		//ask
 		case commands[5]:
+			var msgCont = message.content.split('!ask').pop().toLowerCase()
 			const answers = ['Yes', 'No', 'Maybe']
 			var randomNum = Math.floor(Math.random() * answers.length)
 			var answer = answers[randomNum]
-			if (message.content === '!ask what time is it?' || message.content === '!ask what is the time?' || message.content === '!ask time')
+			if (msgCont.includes('what time is it') || msgCont.includes('what is the time') || msgCont.includes('time'))
 			{
 				message.channel.send('It\'s ' + showTime() + '.')
 				console.log(showTime() + ' time send')

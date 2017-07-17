@@ -51,7 +51,7 @@ Shows first image of google search.
 - !soup  
 Plays soup.  
 - !info
-Shows info over the bot.
+Shows info over the bot.  
 
 ---
 
