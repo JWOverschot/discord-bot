@@ -163,7 +163,7 @@ bot.on('message', function(message)
 					songQueue.push(ytinfoName)
 				}, 2000)
 			}
-			else
+			else if (yturl.includes('youtu.be/'))
 			{
 				message.channel.send(ytinfoName + ' added to queue!')
 				songQueue.push(ytinfoName)
