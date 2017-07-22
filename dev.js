@@ -661,11 +661,7 @@ bot.on('message', function(message)
 			server.queue.push(video)
 			getVideoInfo(video)
 			console.log(showTime() + ' song added to queue')
-			if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection)
-			{
-				play(connection, message)
-				console.log(showTime() + ' soup in voice channel')
-			})
+			playMusic()
 			break
 		//info
 		case commands[16]:
