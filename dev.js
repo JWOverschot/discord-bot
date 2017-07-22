@@ -72,6 +72,30 @@ function showTime() {
 	var finalTime = str_pad_left(h,'0',2)+':'+str_pad_left(m,'0',2)+':'+str_pad_left(s,'0',2)
 	return finalTime
 }
+var dateShow = false
+function dateToday()
+{
+	var date = new Date()
+	var d = date.getDate()
+	var m = date.getMonth() + 1
+	var y = date.getFullYear()
+	var h = date.getHours()
+
+	if (h === 0  && dateShow === false) 
+	{
+		console.log(d + '/' + m + '/' + y)
+		dateShow = true
+		if (h > 0)
+		{
+			dateShow = false
+		}
+	}	
+	return d + '/' + m + '/' + y
+}
+
+setInterval(function(){
+		dateToday()
+	}, 60000)
 
 var servers = {}//changes only in one server
 function play(connection, message)
@@ -104,7 +128,7 @@ bot.login(botToken)
 
 bot.on('ready', function()
 {
-	console.log(showTime() + ' ' + botName + ' is here. Version ' + botVersion)
+	console.log(dateToday() + ' ' + showTime() + ' ' + botName + ' is here. Version ' + botVersion)
 	bot.user.setGame('Overwatch')
 })
 bot.on('message', function(message)
