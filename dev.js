@@ -4,7 +4,7 @@ const botName = 'Devyatta'
 const botToken = keys.devBotKey()
 const googleSearch = keys.googleAPIKey()
 // the rest of the code changes
-const botVersion = 'Jisbot 0.4.0'
+const botVersion = 'Jisbot 1.0.0'
 const Discord = require('discord.js')
 const ytdl = require('ytdl-core')
 const bot = new Discord.Client()
@@ -116,59 +116,48 @@ bot.on('message', function(message)
 
 	function getVideoInfo(yturl)
 	{
-		if (yturl.includes('https://www.youtube.com/watch?v='))
-		{
-			var id = yturl.split('https://www.youtube.com/watch?v=').pop()
-			if (id.length < 11)
+
+		return new Promise(function(resolve, reject) {
+						
+		  if (yturl.includes('https://www.youtube.com/watch?v='))
 			{
-				message.channel.send('Link incomplete.')
-				console.log(showTime() + ' link incomplete')
-				return
-			}
-			if (id.length > 11)
-			{
-				id = id.split('&').shift()
-			}
-		}
-		else if (yturl.includes('youtu.be/'))
-		{
-			var id = yturl.split('youtu.be/').pop()
-		}
-		
-		var ytinfoName = 'No title'
-		ytdl.getInfo(id, function(err, info)
-		{
-			if (err) throw err
-			var title = info.title
-			var length = info.length_seconds
-			var time = length
-			var minutes = Math.floor(time / 60)
-			var seconds = time - minutes * 60
-			var hours = Math.floor(time / 3600)
-			time = time - hours * 3600
-			function str_pad_left(string, pad, length)
-			{
-			    return (new Array(length+1).join(pad)+string).slice(-length)
-			}
-			var finalTime = str_pad_left(hours,'0',2)+':'+str_pad_left(minutes,'0',2)+':'+str_pad_left(seconds,'0',2)
-			ytinfoName = '"' + title + '"' +' [' + finalTime + ']'
-		})
-		setTimeout(function()
-		{
-			if (ytinfoName === 'No title')
-			{
-				setTimeout(function()
+				var id = yturl.split('https://www.youtube.com/watch?v=').pop()
+				if (id.length < 11)
 				{
-					message.channel.send(ytinfoName + ' added to queue!')
-					songQueue.push(ytinfoName)
-				}, 2000)
+					message.channel.send('Link incomplete.')
+					console.log(showTime() + ' link incomplete')
+					return
+				}
+				if (id.length > 11)
+				{
+					id = id.split('&').shift()
+				}
 			}
 			else if (yturl.includes('youtu.be/'))
 			{
-				message.channel.send(ytinfoName + ' added to queue!')
-				songQueue.push(ytinfoName)
+				var id = yturl.split('youtu.be/').pop()
 			}
-		}, 2000)
+			
+			ytdl.getInfo(id, function(err, info)
+			{
+				if (err) throw err
+				var title = info.title
+				var length = info.length_seconds
+				var time = length
+				var minutes = Math.floor(time / 60)
+				var seconds = time - minutes * 60
+				var hours = Math.floor(time / 3600)
+				time = time - hours * 3600
+				function str_pad_left(string, pad, length)
+				{
+				    return (new Array(length+1).join(pad)+string).slice(-length)
+				}
+				var finalTime = str_pad_left(hours,'0',2)+':'+str_pad_left(minutes,'0',2)+':'+str_pad_left(seconds,'0',2)
+				resolve('"' + title + '"' +' [' + finalTime + ']')
+				reject(err)
+			})
+						
+		})
 	}
 
 	switch (args[0].toLowerCase())
@@ -387,7 +376,7 @@ bot.on('message', function(message)
 					})
 				}
 				//playlists
-				if (args[1].includes('www.youtube.com/playlist?list='))
+				else if (args[1].includes('www.youtube.com/playlist?list='))
 				{
 					var playListID = args[1].split('https://www.youtube.com/playlist?list=').pop()
 					if (playListID.length < 34)
@@ -472,7 +461,13 @@ bot.on('message', function(message)
 							var ytVideo = 'https://www.youtube.com/watch?v=' + ytVideoId
 							server.queue.push(ytVideo)
 							console.log(showTime() + ' song added to queue')
-							getVideoInfo(ytVideo)
+							getVideoInfo(ytVideo).then(function(ytinfoName){
+								message.channel.send(ytinfoName + ' added to queue!')
+								songQueue.push(ytinfoName)
+							}).catch(function(err){
+								message.channel.send('Couldn\'t get song information.')
+								console.log(showTime() + ' error no song information')
+							})
 							if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection)
 							{
 								play(connection, message)
