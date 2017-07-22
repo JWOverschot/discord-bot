@@ -113,6 +113,24 @@ bot.on('message', function(message)
 	if (!message.content.startsWith(prefix)) return
 
 	var args = message.content.substring(prefix.length).split(' ')
+	
+	function playMusic(botAction)
+	{
+		if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection)
+		{
+			play(connection, message)
+			if (botAction === 'Singing')
+			{
+				bot.user.setGame('Singing')
+				console.log(showTime() + ' singing in voice channel')	
+			}
+			else
+			{
+				bot.user.setGame('Music')
+				console.log(showTime() + ' playing in voice channel')
+			}
+		})
+	}
 
 	function getVideoInfo(yturl)
 	{
@@ -321,13 +339,7 @@ bot.on('message', function(message)
 			server.queue.push(song)
 			getVideoInfo(song)
 			console.log(showTime() + ' song added to queue')
-			bot.user.setGame('Singing')
-			if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection)
-			{
-				play(connection, message)
-				bot.user.setGame('Singing')
-				console.log(showTime() + ' singing in voice channel')
-			})
+			playMusic('Singing')
 			break
 		//play
 		case commands[9]:
@@ -366,14 +378,9 @@ bot.on('message', function(message)
 					}
 					var server = servers[message.guild.id]
 					server.queue.push(args[1])
+					playMusic()
 					console.log(showTime() + ' song added to queue')
 					getVideoInfo(args[1])
-					if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection)
-					{
-						play(connection, message)
-						bot.user.setGame('Music')
-						console.log(showTime() + ' playing in voice channel')
-					})
 				}
 				//playlists
 				else if (args[1].includes('www.youtube.com/playlist?list='))
@@ -389,44 +396,61 @@ bot.on('message', function(message)
 					{
 						playListID = playListID.split('&').shift()
 					}
-					youTube.addParam('maxResults', '50');
-					youTube.getPlayListsItemsById(playListID, function(error, result)
+					function ytPlayList()
 					{
-						if (error)
-						{
-							console.log(showTime() + ' ' + error)
-							message.channel.send('This playlist is probably private.')
-						}
-						else
-						{
-							var playListLength = result.pageInfo.totalResults
-							var server = servers[message.guild.id]
 
-							if (playListLength > 50)
+						return new Promise(function(resolve, reject)
+						{
+							youTube.addParam('maxResults', '50');
+							youTube.getPlayListsItemsById(playListID, function(error, result)
 							{
-								message.channel.send('Playlists with more than 50 videos are not allowed.')
-								console.log(showTime() + ' surpassed the limit of 50 item in a playlist')
-								return
-							}
-							else
-							{
-								for (var i = 0; i < playListLength; i++)
+								if (error)
 								{
-									var ytVideoId = result.items[i].contentDetails.videoId
-									args[1] = 'https://www.youtube.com/watch?v=' + ytVideoId
-
-									server.queue.push(args[1])
-									console.log(showTime() + ' song added to queue')
-									getVideoInfo(args[1])
-									if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection)
-									{
-										play(connection, message)
-										bot.user.setGame('Music')
-										console.log(showTime() + ' playing in voice channel')
-									})
+									console.log(showTime() + ' ' + error)
+									message.channel.send('This playlist is probably private.')
 								}
-							}
-						}
+								else
+								{
+									var playListLength = result.pageInfo.totalResults
+									var server = servers[message.guild.id]
+
+									if (playListLength > 50)
+									{
+										message.channel.send('Playlists with more than 50 videos are not allowed.')
+										console.log(showTime() + ' surpassed the limit of 50 item in a playlist')
+										return
+									}
+									else
+									{
+										for (var i = 0; i < playListLength; i++)
+										{
+											var ytVideoId = result.items[i].contentDetails.videoId
+											args[1] = 'https://www.youtube.com/watch?v=' + ytVideoId
+
+											server.queue.push(args[1])
+
+											resolve(result)
+											reject(error)
+											console.log(showTime() + ' song added to queue')
+											getVideoInfo(args[1]).then(function(ytinfoName){
+												message.channel.send(ytinfoName + ' added to queue!')
+												songQueue.push(ytinfoName)
+											}).catch(function(err){
+												message.channel.send('Couldn\'t get song information.')
+												console.log(showTime() + ' error no song information')
+											})
+										}
+									}
+								}
+							})
+						})
+					}
+					ytPlayList().then(function()
+					{
+						playMusic()
+					}).catch(function(error){
+						message.channel.send('Problem with playing music.')
+						console.log(showTime() + ' ' + error)
 					})
 				}
 				else
@@ -439,43 +463,56 @@ bot.on('message', function(message)
 			// YouTube serach
 			else
 			{
-				youTube.addParam('type', 'video')
-				youTube.search(message.content.split('!play').pop(), 1, function(error, result)
+				function ytSearch()
 				{
-					if (error)
+
+					return new Promise(function(resolve, reject)
 					{
-						console.log(showTime() + ' ' + error)
-						return
-					}
-					else
-					{
-						if (result.items[0] == undefined  || result.items[0].id.videoId == undefined)
+						youTube.addParam('type', 'video')
+						youTube.search(message.content.split('!play').pop(), 1, function(error, result)
 						{
-							message.channel.send('No search results.')
-							console.log(showTime() + ' no search results')
-						}
-						else
-						{
-							var server = servers[message.guild.id]
-							var ytVideoId = result.items[0].id.videoId
-							var ytVideo = 'https://www.youtube.com/watch?v=' + ytVideoId
-							server.queue.push(ytVideo)
-							console.log(showTime() + ' song added to queue')
-							getVideoInfo(ytVideo).then(function(ytinfoName){
-								message.channel.send(ytinfoName + ' added to queue!')
-								songQueue.push(ytinfoName)
-							}).catch(function(err){
-								message.channel.send('Couldn\'t get song information.')
-								console.log(showTime() + ' error no song information')
-							})
-							if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection)
+							if (error)
 							{
-								play(connection, message)
-								bot.user.setGame('Music')
-								console.log(showTime() + ' playing in voice channel')
-							})
-						}
-					}
+								console.log(showTime() + ' ' + error)
+								return
+							}
+							else
+							{
+								if (result.items[0] == undefined  || result.items[0].id.videoId == undefined)
+								{
+									message.channel.send('No search results.')
+									console.log(showTime() + ' no search results')
+								}
+								else
+								{
+									var server = servers[message.guild.id]
+									var ytVideoId = result.items[0].id.videoId
+									var ytVideo = 'https://www.youtube.com/watch?v=' + ytVideoId
+
+									resolve(result)
+									reject(error)
+
+									server.queue.push(ytVideo)
+
+									console.log(showTime() + ' song added to queue')
+									getVideoInfo(ytVideo).then(function(ytinfoName){
+										message.channel.send(ytinfoName + ' added to queue!')
+										songQueue.push(ytinfoName)
+									}).catch(function(err){
+										message.channel.send('Couldn\'t get song information.')
+										console.log(showTime() + ' error no song information')
+									})
+								}
+							}
+						})
+					})
+				}
+				ytSearch().then(function()
+				{
+					playMusic()
+				}).catch(function(error){
+					message.channel.send('Problem with playing music.')
+					console.log(showTime() + ' ' + error)
 				})
 			}
 			break
