@@ -3,6 +3,11 @@ const keys = require('./6f97a6a13d775ff617e6e9607c65df.js')
 const botName = 'Devyatta'
 const botToken = keys.devBotKey()
 const googleSearch = keys.googleAPIKey()
+require('crashreporter').configure({
+    outDir: ('./crash_logs_dev'), // default to cwd 
+    exitOnCrash: true, // if you want that crash reporter exit(1) for you, default to true, 
+    maxCrashFile: 50 // older files will be removed up, default 5 files are kept 
+})
 // the rest of the code changes
 const botVersion = 'Jisbot 1.0.0'
 const Discord = require('discord.js')
