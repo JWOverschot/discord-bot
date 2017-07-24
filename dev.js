@@ -451,7 +451,7 @@ bot.on('message', function(message)
 
 						return new Promise(function(resolve, reject)
 						{
-							youTube.addParam('maxResults', '50');
+							youTube.addParam('maxResults', settings.maxInPlaylist);
 							youTube.getPlayListsItemsById(playListID, function(error, result)
 							{
 								if (error)
@@ -464,10 +464,10 @@ bot.on('message', function(message)
 									var playListLength = result.pageInfo.totalResults
 									var server = servers[message.guild.id]
 
-									if (playListLength > 50)
+									if (playListLength > settings.maxInPlaylist)
 									{
-										message.channel.send('Playlists with more than 50 videos are not allowed.')
-										console.log(showTime() + ' surpassed the limit of 50 item in a playlist')
+										message.channel.send('Playlists with more than ' + settings.maxInPlaylist + ' videos are not allowed.')
+										console.log(showTime() + ' surpassed the limit of ' + settings.maxInPlaylist + ' item in a playlist')
 										return
 									}
 									else
@@ -768,8 +768,27 @@ bot.on('message', function(message)
 						console.log(showTime() + ' someone tride to use "/", "-", "*", "+"')
 						return
 					}
+					if (!fs.existsSync('./settings.js'))
+					{
+						fs.writeFile('./settings.js', 'let settingsObj = ' + JSON.stringify(settings, null, 2) + '\nmodule.exports = settingsObj', function(err)
+						{
+							if(err)
+							{
+								return console.log(showTime() + ' ' + err)
+							}
+							console.log(showTime() + ' settings created')
+						})
+					}
 					//this is not yet saved to settings.js, needs to be added
 					settings.maxInPlaylist = args[2]
+					replace({
+						regex: 'maxInPlaylist": "50"',
+						replacement: 'maxInPlaylist": "' + args[2] + '"',
+						paths: ['./settings.js'],
+						recursive: true,
+						silent: true,
+					})
+					console.log(showTime() + ' settings updated');
 					message.channel.send(args[1] + ' is now changed to ' + args[2])
 					console.log(showTime() + ' ' + args[1] + ' changed to ' + args[2])
 					console.log(settings.maxInPlaylist)
