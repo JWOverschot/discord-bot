@@ -148,7 +148,7 @@ bot.on('message', function(message)
 	if (message.author.equals(bot.user)) return
 	if (!message.content.startsWith(prefix)) return
 
-	var args = message.content.toLowerCase().substring(prefix.length).split(' ')
+	var args = message.content.substring(prefix.length).split(' ')
 	
 	function playMusic(botAction)
 	{
@@ -747,6 +747,7 @@ bot.on('message', function(message)
 					message.channel.send('```JSON' + '\n' + str + '\n' + '```')//add description on settings and how to edit!!
 					console.log(str)
 				}
+				args[1] = args[1].toLowerCase()
 				if (args[1] === 'maxinplaylist')
 				{
 					if (!args[2])
