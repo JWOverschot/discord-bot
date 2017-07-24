@@ -18,12 +18,6 @@ const youTube = new YouTube()
 youTube.setKey(googleSearch)
 const googleIms = require('google-ims')
 let client = googleIms('016227928627283430649:sy5nfspjpus', googleSearch)
-require('crashreporter').configure({
-    outDir: ('./crash_logs'), // default to cwd 
-    exitOnCrash: true, // if you want that crash reporter exit(1) for you, default to true, 
-    maxCrashFile: 50 // older files will be removed up, default 5 files are kept 
-})
-
 const prefix = '!'
 
 const commands = [
