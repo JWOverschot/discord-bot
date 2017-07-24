@@ -10,6 +10,7 @@ require('crashreporter').configure({
 })
 // the rest of the code changes
 const botVersion = 'Jisbot 1.0.0'
+let fs = require('fs')
 const Discord = require('discord.js')
 const ytdl = require('ytdl-core')
 const bot = new Discord.Client()
@@ -18,6 +19,15 @@ const youTube = new YouTube()
 youTube.setKey(googleSearch)
 const googleIms = require('google-ims')
 let client = googleIms('016227928627283430649:sy5nfspjpus', googleSearch)
+let settings = 'No settings'
+if (fs.existsSync('./settings.js'))
+{
+  settings = require('./settings.js')
+}
+else
+{
+	settings = require('./settings_default.js')
+}
 const prefix = '!'
 
 const commands = [
@@ -37,7 +47,8 @@ const commands = [
 	/*13*/'queue',
 	/*14*/'img',
 	/*15*/'soup',
-	/*16*/'info'
+	/*16*/'info',
+	/*17*/'settings'
 ]
 const commandsInfo = [
 	'Greetings message.', //hello
@@ -56,7 +67,8 @@ const commandsInfo = [
 	'Shows the songs in the queue', //queue
 	'Shows first image of google search', // img
 	'Plays soup', //soup
-	'Shows info over the bot' //info
+	'Shows info over the bot', //info
+	'Change settings for the bot (only the owner of the server can change the settings)' //settings
 ]
 var songQueue = []
 function showTime() {
@@ -704,6 +716,64 @@ bot.on('message', function(message)
 				embed.setDescription('For releases and patch notes visit https://github.com/JWOverschot/discord-bot/releases')
 				message.channel.sendEmbed(embed)
 				console.log(showTime() + ' ' + botVersion)
+			break
+
+		//only admin enebeld command
+		case commands[17]:
+			//checking for permission, if command needs permission always use this function and if statement
+			hasPermission()
+			//everything inside this if statement is only available to the owner of the guild,
+			//so everything has to be inside this statment here!!
+			if (permis === true)
+			{
+				if (!args[1])
+				{
+					let str = JSON.stringify(settings, null, 1)
+					message.channel.send('```JSON' + '\n' + str + '\n' + '```')//add description on settings and how to edit!!
+					console.log(str)
+				}
+				if (args[1] === 'maxinplaylist')
+				{
+					if (!args[2])
+					{
+						message.channel.send('You have to insert a value.')
+						console.log(showTime() + ' no value')
+						return
+					}
+					if (isNaN(parseInt(args[2]), 10) || args[2] < 1 || args[2] > 50)
+					{
+						message.channel.send('This is an invalid value.')
+						console.log(showTime() + ' invalid value')
+						return
+					}
+					if (args[2].includes('/') || args[2].includes('*') || args[2].includes('-') || args[2].includes('+'))
+					{
+						message.channel.send('You\'re not allowed to use "/", "-", "*", "+".')
+						console.log(showTime() + ' someone tride to use "/", "-", "*", "+"')
+						return
+					}
+					//this is not yet saved to settings.js, needs to be added
+					settings.maxInPlaylist = args[2]
+					message.channel.send(args[1] + ' is now changed to ' + args[2])
+					console.log(showTime() + ' ' + args[1] + ' changed to ' + args[2])
+					console.log(settings.maxInPlaylist)
+				}
+				else
+				{
+					message.channel.send('There is no setting called ' + message.content + '.')
+					console.log(showTime() + ' invalid value')
+					return
+				}
+			
+// 		fs.writeFile('./settings', JSON.stringify(settings, null, 2), function(err)
+//		{
+//    	if(err)
+//			{
+//	   		return console.log(showTime() + ' ' + err);
+//    	}
+//    	console.log("The file was saved!");
+// 		})
+			}
 			break
 
 		default:
