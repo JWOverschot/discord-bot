@@ -212,6 +212,20 @@ bot.on('message', function(message)
 						
 		})
 	}
+	var permis = false
+	function hasPermission()
+	{
+		if (message.author.id === message.guild.owner.id)
+		{
+				return permis = true
+		}
+		else
+		{
+			message.channel.send('You don\'t have permission to use this command!')
+			return permis = false
+		}
+		console.log(message.guild.owner.id + ' <-------> ' + message.author.id)
+	}
 
 	switch (args[0].toLowerCase())
 	{
