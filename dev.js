@@ -19,6 +19,7 @@ const youTube = new YouTube()
 youTube.setKey(googleSearch)
 const googleIms = require('google-ims')
 let client = googleIms('016227928627283430649:sy5nfspjpus', googleSearch)
+const replace = require("replace")
 let settings = 'No settings'
 if (fs.existsSync('./settings.js'))
 {
