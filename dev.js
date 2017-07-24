@@ -135,7 +135,7 @@ bot.on('message', function(message)
 	if (message.author.equals(bot.user)) return
 	if (!message.content.startsWith(prefix)) return
 
-	var args = message.content.substring(prefix.length).split(' ')
+	var args = message.content.toLowerCase().substring(prefix.length).split(' ')
 	
 	function playMusic(botAction)
 	{
