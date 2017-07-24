@@ -590,6 +590,12 @@ bot.on('message', function(message)
 				console.log(showTime() + ' queue item doesn\'t exsist')
 				return
 			}
+			if (args[1].includes('/') || args[1].includes('*') || args[1].includes('-') || args[1].includes('+'))
+			{
+				message.channel.send('You\'re not allowed to do that.')
+				console.log(showTime() + ' someone tride to use "/", "-", "*", "+"')
+				return
+			}
 			index = parseInt(args[1])
 			server.queue.splice(index - 1, 1)
 			songQueue.splice(index, 1)
