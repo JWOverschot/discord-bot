@@ -72,42 +72,22 @@ const commandsInfo = [
 	'Change settings for the bot (only the owner of the server can change the settings)' //settings
 ]
 var songQueue = []
-function showTime() {
-	var d = new Date()
-	var h = d.getHours().toString()
-	var m = d.getMinutes().toString()
-	var s = d.getSeconds().toString()
+function showTime()
+{
+	var date = new Date()
+	var h = date.getHours().toString()
+	var m = date.getMinutes().toString()
+	var s = date.getSeconds().toString()
+	var d = date.getDate()
+	var m = date.getMonth() + 1
+	var y = date.getFullYear()
 	function str_pad_left(string,pad,length)
 	{
 	    return (new Array(length+1).join(pad)+string).slice(-length)
 	}
 	var finalTime = str_pad_left(h,'0',2)+':'+str_pad_left(m,'0',2)+':'+str_pad_left(s,'0',2)
-	return finalTime
+	return  d + '/' + m + '/' + y + ' ' + finalTime
 }
-var dateShow = false
-function dateToday()
-{
-	var date = new Date()
-	var d = date.getDate()
-	var m = date.getMonth() + 1
-	var y = date.getFullYear()
-	var h = date.getHours()
-
-	if (h === 0  && dateShow === false) 
-	{
-		console.log(d + '/' + m + '/' + y)
-		dateShow = true
-		if (h > 0)
-		{
-			dateShow = false
-		}
-	}	
-	return d + '/' + m + '/' + y
-}
-
-setInterval(function(){
-		dateToday()
-	}, 60000)
 
 var servers = {}//changes only in one server
 function play(connection, message)
@@ -140,7 +120,7 @@ bot.login(botToken)
 
 bot.on('ready', function()
 {
-	console.log(dateToday() + ' ' + showTime() + ' ' + botName + ' is here. Version ' + botVersion)
+	console.log(showTime() + ' ' + botName + ' is here. Version ' + botVersion)
 	bot.user.setGame('Overwatch')
 })
 bot.on('message', function(message)
