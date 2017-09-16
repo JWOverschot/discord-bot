@@ -240,7 +240,7 @@ bot.on('message', function(message)
 			{
 				embed.addField('!' + item, commandsInfo[index])
 			})
-			embed.setColor(0x66ccff)
+			embed.setColor(0xff9c00)
 			message.channel.sendEmbed(embed)
 			console.log(showTime() + ' help message send')
 			break
@@ -656,7 +656,7 @@ bot.on('message', function(message)
 				embed.addField(index, songQueue[i])
 				i++
 			})
-			embed.setColor(0x3399ff)
+			embed.setColor(0x00c3ff)
 			message.channel.sendEmbed(embed)
 			console.log(showTime() + ' queue list send')
 			break
