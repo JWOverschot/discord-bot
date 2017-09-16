@@ -638,7 +638,7 @@ bot.on('message', function(message)
 		//queue
 		case commands[13]:
 			var server = servers[message.guild.id]
-			if (!server || !server.queue.length > 0)
+			if (!server || !songQueue.length > 0)
 			{
 				message.channel.send('There are no songs in the queue.')
 				console.log(showTime() + ' no queue')
