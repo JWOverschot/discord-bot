@@ -104,12 +104,13 @@ function play(connection, message)
 		{
 			play(connection, message)
 			console.log(showTime() + ' playing music')
+			bot.user.setPresence({ game: { name: 'Music', type: 0 } })
 			songQueue.shift()
 		}
 		else
 		{
 			connection.disconnect()
-			bot.user.setGame('Overwatch')
+			bot.user.setPresence({ game: { name: 'Overwatch', type: 0 } })
 			songQueue = []
 			console.log(showTime() + ' disconnected from voice channel')
 		}
@@ -121,7 +122,7 @@ bot.login(botToken)
 bot.on('ready', function()
 {
 	console.log(showTime() + ' ' + botName + ' is here. Version ' + botVersion)
-	bot.user.setGame('Overwatch')
+	bot.user.setPresence({ game: { name: 'Overwatch', type: 0 } })
 })
 bot.on('message', function(message)
 {
@@ -137,12 +138,12 @@ bot.on('message', function(message)
 			play(connection, message)
 			if (botAction === 'Singing')
 			{
-				bot.user.setGame('Singing')
+				bot.user.setPresence({ game: { name: 'Singing', type: 0 } })
 				console.log(showTime() + ' singing in voice channel')	
 			}
 			else
 			{
-				bot.user.setGame('Music')
+				bot.user.setPresence({ game: { name: 'Music', type: 0 } })
 				console.log(showTime() + ' playing in voice channel')
 			}
 		})
