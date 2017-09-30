@@ -23,11 +23,7 @@ const replace = require("replace")
 let settings = 'No settings'
 if (fs.existsSync('./settings.js'))
 {
-  settings = require('./settings.js')
-}
-else
-{
-	settings = require('./settings_default.js')
+	settings = require('./settings.js')
 }
 const prefix = '!'
 
@@ -749,30 +745,26 @@ bot.on('message', function(message)
 						console.log(showTime() + ' someone tride to use "/", "-", "*", "+"')
 						return
 					}
-					if (!fs.existsSync('./settings.js'))
-					{
-						fs.writeFile('./settings.js', 'let settingsObj = ' + JSON.stringify(settings, null, 2) + '\nmodule.exports = settingsObj', function(err)
-						{
-							if(err)
-							{
-								return console.log(showTime() + ' ' + err)
-							}
-							console.log(showTime() + ' settings created')
-						})
-					}
-					//this is not yet saved to settings.js, needs to be added
-					settings.maxInPlaylist = args[2]
 					replace({
-						regex: 'maxInPlaylist": "50"',
+						regex: 'maxInPlaylist": "' + settings.maxInPlaylist + '"',
 						replacement: 'maxInPlaylist": "' + args[2] + '"',
 						paths: ['./settings.js'],
 						recursive: true,
 						silent: true,
 					})
-					console.log(showTime() + ' settings updated');
-					message.channel.send(args[1] + ' is now changed to ' + args[2])
-					console.log(showTime() + ' ' + args[1] + ' changed to ' + args[2])
-					console.log(settings.maxInPlaylist)
+					settings.maxInPlaylist = args[2]
+					console.log(showTime() + ' settings updated')
+					message.channel.send('maxInPlaylist is now changed to ' + args[2])
+					console.log(showTime() + ' maxInPlaylist changed to ' + args[2])
+				}
+					{
+						})
+					}
+					replace({
+						paths: ['./settings.js'],
+						recursive: true,
+						silent: true,
+					})
 				}
 				else
 				{
