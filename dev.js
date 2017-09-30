@@ -733,8 +733,8 @@ bot.on('message', function(message)
 				{
 					if (!args[2])
 					{
-						message.channel.send('You have to insert a value.')
-						console.log(showTime() + ' no value')
+						message.channel.send('maxInPlaylist is currently set to ' + settings.maxInPlaylist + '.')
+						console.log(showTime() + ' maxInPlaylist is currently set to ' + settings.maxInPlaylist)
 						return
 					}
 					if (isNaN(parseInt(args[2]), 10) || args[2] < 1 || args[2] > 50)
