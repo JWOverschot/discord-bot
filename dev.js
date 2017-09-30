@@ -667,7 +667,7 @@ bot.on('message', function(message)
 			client.search(message.content.split('!img').pop(),
 			{
 				page: 1, // 10 results per page 
-				safe: 'off', // high, medium, off 
+				safe: settings.imgSafeSearch, // high, medium, off 
 				googlehost: 'google.com', // google domain to use
 				num: 1 // number of results per page, default 10 
 
@@ -757,9 +757,36 @@ bot.on('message', function(message)
 					message.channel.send('maxInPlaylist is now changed to ' + args[2])
 					console.log(showTime() + ' maxInPlaylist changed to ' + args[2])
 				}
+				else if (args[1] === 'imgsafesearch')
+				{
+					if (!args[2])
 					{
-						})
+						message.channel.send('imgSafeSearch is currently set to ' + settings.imgSafeSearch + '.')
+						console.log(showTime() + ' imgSafeSearch is currently set to ' + settings.imgSafeSearch)
+						return
 					}
+					args[2] = args[2].toLowerCase()
+					if (args[2] == 'high' || args[2] == 'medium' || args[2] == 'off')
+					{
+						replace({
+						regex: 'imgSafeSearch": "' + settings.imgSafeSearch + '"',
+						replacement: 'imgSafeSearch": "' + args[2] + '"',
+						paths: ['./settings.js'],
+						recursive: true,
+						silent: true,
+						})
+						settings.imgSafeSearch = args[2]
+						console.log(showTime() + ' settings updated')
+						message.channel.send('imgSafeSearch is now changed to ' + args[2])
+						console.log(showTime() + ' imgSafeSearch changed to ' + args[2])
+					}
+					else {
+						message.channel.send('This is an invalid value. You can choose between high, medium and off.')
+						console.log(showTime() + ' invalid value')
+						return
+					}
+					
+				}
 					replace({
 						paths: ['./settings.js'],
 						recursive: true,
