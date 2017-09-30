@@ -106,7 +106,7 @@ function play(connection, message)
 		else
 		{
 			connection.disconnect()
-			bot.user.setPresence({ game: { name: 'Overwatch', type: 0 } })
+			bot.user.setPresence({ game: { name: settings.gamePlaying, type: 0 } })
 			songQueue = []
 			console.log(showTime() + ' disconnected from voice channel')
 		}
@@ -118,7 +118,7 @@ bot.login(botToken)
 bot.on('ready', function()
 {
 	console.log(showTime() + ' ' + botName + ' is here. Version ' + botVersion)
-	bot.user.setPresence({ game: { name: 'Overwatch', type: 0 } })
+	bot.user.setPresence({ game: { name: settings.gamePlaying, type: 0 } })
 })
 bot.on('message', function(message)
 {
@@ -787,11 +787,32 @@ bot.on('message', function(message)
 					}
 					
 				}
+				else if (args[1] === 'gameplaying')
+				{
+					if (!args[2])
+					{
+						message.channel.send('gamePlaying is currently set to ' + settings.gamePlaying + '.')
+						console.log(showTime() + ' gamePlaying is currently set to ' + settings.gamePlaying)
+						return
+					}
+					let gameString = ''
+					for (var i = 2; i < args.length; i++) {
+						gameString += args[i] + ' '
+					}
+					gameString = gameString.trim()
 					replace({
+						regex: 'gamePlaying": "' + settings.gamePlaying + '"',
+						replacement: 'gamePlaying": "' + gameString + '"',
 						paths: ['./settings.js'],
 						recursive: true,
 						silent: true,
 					})
+					
+					settings.gamePlaying = gameString
+					bot.user.setPresence({ game: { name: settings.gamePlaying, type: 0 } })
+					console.log(showTime() + ' settings updated')
+					message.channel.send('gamePlaying is now changed to ' + gameString)
+					console.log(showTime() + ' gamePlaying changed to ' + gameString)
 				}
 				else
 				{
