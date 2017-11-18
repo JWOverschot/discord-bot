@@ -782,6 +782,12 @@ bot.on('message', function(message)
 					}
 					else {
 						message.channel.send('This is an invalid value. You can choose between high, medium and off.')
+						if (args[2].includes('\\') || args[2].includes('"') || args[2].includes('\''))
+						{
+							message.channel.send('You\'re not allowed to use \\\\, ", \'.')
+							console.log(showTime() + ' someone tride to use \\\\, ", \'')
+							return
+						}
 						console.log(showTime() + ' invalid value')
 						return
 					}
