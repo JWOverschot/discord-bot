@@ -13,6 +13,7 @@ const botVersion = 'Jisbot 1.0.0'
 let fs = require('fs')
 const Discord = require('discord.js')
 const ytdl = require('ytdl-core')
+const path = require('path')
 const bot = new Discord.Client()
 const YouTube = require('youtube-node')
 const youTube = new YouTube()
@@ -20,11 +21,7 @@ youTube.setKey(googleSearch)
 const googleIms = require('google-ims')
 let client = googleIms('016227928627283430649:sy5nfspjpus', googleSearch)
 const replace = require("replace")
-let settings = 'No settings'
-if (fs.existsSync('./settings.js'))
-{
-	settings = require('./settings.js')
-}
+let settings = require('./settings.js')
 const prefix = '!'
 
 const commands = [
@@ -725,109 +722,123 @@ bot.on('message', function(message)
 					return message.channel.send('```JSON' + '\n' + str + '\n' + '```')//add description on settings and how to edit!!
 				}
 				args[1] = args[1].toLowerCase()
-					if (!args[2])
-					{
-						message.channel.send('maxInPlaylist is currently set to ' + settings.maxInPlaylist + '.')
-						console.log(showTime() + ' maxInPlaylist is currently set to ' + settings.maxInPlaylist)
-						return
-					}
-					if (isNaN(parseInt(args[2]), 10) || args[2] < 1 || args[2] > 50)
-					{
-						message.channel.send('This is an invalid value.')
-						console.log(showTime() + ' invalid value')
-						return
-					}
-					if (args[2].includes('/') || args[2].includes('*') || args[2].includes('-') || args[2].includes('+'))
-					{
-						message.channel.send('You\'re not allowed to use "/", "-", "*", "+".')
-						console.log(showTime() + ' someone tride to use "/", "-", "*", "+"')
-						return
-					}
-					replace({
-						regex: 'maxInPlaylist": "' + settings.maxInPlaylist + '"',
-						replacement: 'maxInPlaylist": "' + args[2] + '"',
-						paths: ['./settings.js'],
-						recursive: true,
-						silent: true,
-					})
-					settings.maxInPlaylist = args[2]
-					console.log(showTime() + ' settings updated')
-					message.channel.send('maxInPlaylist is now changed to ' + args[2])
-					console.log(showTime() + ' maxInPlaylist changed to ' + args[2])
-					if (!args[2])
-					{
-						message.channel.send('imgSafeSearch is currently set to ' + settings.imgSafeSearch + '.')
-						console.log(showTime() + ' imgSafeSearch is currently set to ' + settings.imgSafeSearch)
-						return
-					}
-					args[2] = args[2].toLowerCase()
-					if (args[2] == 'high' || args[2] == 'medium' || args[2] == 'off')
-					{
 				switch(args[1]) {
 					case 'maxinplaylist':
+						if (!args[2])
+						{
+							message.channel.send('maxInPlaylist is currently set to ' + settings.maxInPlaylist + '.')
+							console.log(showTime() + ' maxInPlaylist is currently set to ' + settings.maxInPlaylist)
+							return
+						}
+						if (isNaN(parseInt(args[2]), 10) || args[2] < 1 || args[2] > 50)
+						{
+							message.channel.send('This is an invalid value.')
+							console.log(showTime() + ' invalid value')
+							return
+						}
+						if (args[2].includes('/') || args[2].includes('*') || args[2].includes('-') || args[2].includes('+'))
+						{
+							message.channel.send('You\'re not allowed to use "/", "-", "*", "+".')
+							console.log(showTime() + ' someone tride to use "/", "-", "*", "+"')
+							return
+						}
 						replace({
-						regex: 'imgSafeSearch": "' + settings.imgSafeSearch + '"',
-						replacement: 'imgSafeSearch": "' + args[2] + '"',
-						paths: ['./settings.js'],
-						recursive: true,
-						silent: true,
+							regex: 'maxInPlaylist": "' + settings.maxInPlaylist + '"',
+							replacement: 'maxInPlaylist": "' + args[2] + '"',
+							paths: ['./settings.js'],
+							recursive: true,
+							silent: true,
 						})
-						settings.imgSafeSearch = args[2]
+						settings.maxInPlaylist = args[2]
 						console.log(showTime() + ' settings updated')
-						message.channel.send('imgSafeSearch is now changed to ' + args[2])
-						console.log(showTime() + ' imgSafeSearch changed to ' + args[2])
-					}
-					else {
-						message.channel.send('This is an invalid value. You can choose between high, medium and off.')
+						message.channel.send('maxInPlaylist is now changed to ' + args[2])
+						console.log(showTime() + ' maxInPlaylist changed to ' + args[2])
 						break
 
 					case 'imgsafesearch':
+						if (!args[2])
+						{
+							message.channel.send('imgSafeSearch is currently set to ' + settings.imgSafeSearch + '.')
+							console.log(showTime() + ' imgSafeSearch is currently set to ' + settings.imgSafeSearch)
+							return
+						}
+						args[2] = args[2].toLowerCase()
+						if (args[2] == 'high' || args[2] == 'medium' || args[2] == 'off')
+						{
+							replace({
+							regex: 'imgSafeSearch": "' + settings.imgSafeSearch + '"',
+							replacement: 'imgSafeSearch": "' + args[2] + '"',
+							paths: ['./settings.js'],
+							recursive: true,
+							silent: true,
+							})
+							settings.imgSafeSearch = args[2]
+							console.log(showTime() + ' settings updated')
+							message.channel.send('imgSafeSearch is now changed to ' + args[2])
+							console.log(showTime() + ' imgSafeSearch changed to ' + args[2])
+						}
+						else {
+							message.channel.send('This is an invalid value. You can choose between high, medium and off.')
+							console.log(showTime() + ' invalid value')
+							return
+						}
 						break
 
 					case 'gameplaying':
+						if (!args[2])
+						{
+							message.channel.send('gamePlaying is currently set to ' + settings.gamePlaying + '.')
+							console.log(showTime() + ' gamePlaying is currently set to ' + settings.gamePlaying)
+							return
+						}
 						if (args[2].includes('\\') || args[2].includes('"') || args[2].includes('\''))
 						{
 							message.channel.send('You\'re not allowed to use \\\\, ", \'.')
 							console.log(showTime() + ' someone tride to use \\\\, ", \'')
 							return
 						}
+						let gameString = ''
+						for (var i = 2; i < args.length; i++) {
+							gameString += args[i] + ' '
+						}
+						gameString = gameString.trim()
+						replace({
+							regex: 'gamePlaying": "' + settings.gamePlaying + '"',
+							replacement: 'gamePlaying": "' + gameString + '"',
+							paths: ['./settings.js'],
+							recursive: true,
+							silent: true,
+						})
+						
+						settings.gamePlaying = gameString
+						bot.user.setPresence({ game: { name: settings.gamePlaying, type: 0 } })
+						console.log(showTime() + ' settings updated')
+						message.channel.send('gamePlaying is now changed to ' + gameString)
+						console.log(showTime() + ' gamePlaying changed to ' + gameString)
 						break
 
 					case 'reset':
+						delete require.cache[path.resolve('./settings_default.js')]
+						const defSettings = require('./settings_default.js')
+						fs.writeFile('./settings.js', 'let settingsObj = ' + JSON.stringify(defSettings, null, 2) + '\nmodule.exports = settingsObj', function(err)
+						{
+							if(err)
+							{
+								return console.log(showTime() + ' ' + err)
+							}
+							delete require.cache[path.resolve('./settings.js')]
+						settings = require('./settings.js')
+						})
+						bot.user.setPresence({ game: { name: defSettings.gamePlaying, type: 0 } })
+						message.channel.send('Settings have been reset to default.')
+						console.log(showTime() + ' settings reset')
 						break
 
 					default:
+						message.channel.send('There is no setting called ' + args[1] + '.')
 						console.log(showTime() + ' invalid value')
 						return
-					if (!args[2])
-					{
-						message.channel.send('gamePlaying is currently set to ' + settings.gamePlaying + '.')
-						console.log(showTime() + ' gamePlaying is currently set to ' + settings.gamePlaying)
-						return
-					}
-					let gameString = ''
-					for (var i = 2; i < args.length; i++) {
-						gameString += args[i] + ' '
-					}
-					gameString = gameString.trim()
-					replace({
-						regex: 'gamePlaying": "' + settings.gamePlaying + '"',
-						replacement: 'gamePlaying": "' + gameString + '"',
-						paths: ['./settings.js'],
-						recursive: true,
-						silent: true,
-					})
-					
-					settings.gamePlaying = gameString
-					bot.user.setPresence({ game: { name: settings.gamePlaying, type: 0 } })
-					console.log(showTime() + ' settings updated')
-					message.channel.send('gamePlaying is now changed to ' + gameString)
-					console.log(showTime() + ' gamePlaying changed to ' + gameString)
 				}
-					message.channel.send('There is no setting called ' + message.content + '.')
-					console.log(showTime() + ' invalid value')
-					return
-			
 			}
 			break
 
