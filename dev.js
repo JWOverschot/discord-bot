@@ -725,8 +725,6 @@ bot.on('message', function(message)
 					return message.channel.send('```JSON' + '\n' + str + '\n' + '```')//add description on settings and how to edit!!
 				}
 				args[1] = args[1].toLowerCase()
-				if (args[1] === 'maxinplaylist')
-				{
 					if (!args[2])
 					{
 						message.channel.send('maxInPlaylist is currently set to ' + settings.maxInPlaylist + '.')
@@ -756,9 +754,6 @@ bot.on('message', function(message)
 					console.log(showTime() + ' settings updated')
 					message.channel.send('maxInPlaylist is now changed to ' + args[2])
 					console.log(showTime() + ' maxInPlaylist changed to ' + args[2])
-				}
-				else if (args[1] === 'imgsafesearch')
-				{
 					if (!args[2])
 					{
 						message.channel.send('imgSafeSearch is currently set to ' + settings.imgSafeSearch + '.')
@@ -768,6 +763,8 @@ bot.on('message', function(message)
 					args[2] = args[2].toLowerCase()
 					if (args[2] == 'high' || args[2] == 'medium' || args[2] == 'off')
 					{
+				switch(args[1]) {
+					case 'maxinplaylist':
 						replace({
 						regex: 'imgSafeSearch": "' + settings.imgSafeSearch + '"',
 						replacement: 'imgSafeSearch": "' + args[2] + '"',
@@ -782,19 +779,26 @@ bot.on('message', function(message)
 					}
 					else {
 						message.channel.send('This is an invalid value. You can choose between high, medium and off.')
+						break
+
+					case 'imgsafesearch':
+						break
+
+					case 'gameplaying':
 						if (args[2].includes('\\') || args[2].includes('"') || args[2].includes('\''))
 						{
 							message.channel.send('You\'re not allowed to use \\\\, ", \'.')
 							console.log(showTime() + ' someone tride to use \\\\, ", \'')
 							return
 						}
+						break
+
+					case 'reset':
+						break
+
+					default:
 						console.log(showTime() + ' invalid value')
 						return
-					}
-					
-				}
-				else if (args[1] === 'gameplaying')
-				{
 					if (!args[2])
 					{
 						message.channel.send('gamePlaying is currently set to ' + settings.gamePlaying + '.')
@@ -820,12 +824,9 @@ bot.on('message', function(message)
 					message.channel.send('gamePlaying is now changed to ' + gameString)
 					console.log(showTime() + ' gamePlaying changed to ' + gameString)
 				}
-				else
-				{
 					message.channel.send('There is no setting called ' + message.content + '.')
 					console.log(showTime() + ' invalid value')
 					return
-				}
 			
 // 		fs.writeFile('./settings', JSON.stringify(settings, null, 2), function(err)
 //		{
