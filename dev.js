@@ -828,14 +828,6 @@ bot.on('message', function(message)
 					console.log(showTime() + ' invalid value')
 					return
 			
-// 		fs.writeFile('./settings', JSON.stringify(settings, null, 2), function(err)
-//		{
-//    	if(err)
-//			{
-//	   		return console.log(showTime() + ' ' + err);
-//    	}
-//    	console.log("The file was saved!");
-// 		})
 			}
 			break
 
