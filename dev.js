@@ -721,8 +721,8 @@ bot.on('message', function(message)
 				if (!args[1])
 				{
 					let str = JSON.stringify(settings, null, 1)
-					message.channel.send('```JSON' + '\n' + str + '\n' + '```')//add description on settings and how to edit!!
 					console.log(str)
+					return message.channel.send('```JSON' + '\n' + str + '\n' + '```')//add description on settings and how to edit!!
 				}
 				args[1] = args[1].toLowerCase()
 				if (args[1] === 'maxinplaylist')
