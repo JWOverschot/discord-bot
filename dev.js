@@ -22,6 +22,7 @@ const googleIms = require('google-ims')
 let client = googleIms('016227928627283430649:sy5nfspjpus', googleSearch)
 const replace = require("replace")
 let settings = require('./settings.js')
+let defSettings = require('./settings_default.js')
 const prefix = '!'
 
 const commands = [
@@ -730,6 +731,9 @@ bot.on('message', function(message)
 							console.log(showTime() + ' maxInPlaylist is currently set to ' + settings.maxInPlaylist)
 							return
 						}
+						if (args[2].toLowerCase() === 'reset') {
+							args[2] = defSettings.maxInPlaylist
+						}
 						if (isNaN(parseInt(args[2]), 10) || args[2] < 1 || args[2] > 50)
 						{
 							message.channel.send('This is an invalid value.')
@@ -763,6 +767,9 @@ bot.on('message', function(message)
 							return
 						}
 						args[2] = args[2].toLowerCase()
+						if (args[2] === 'reset') {
+							args[2] = defSettings.imgSafeSearch
+						}
 						if (args[2] == 'high' || args[2] == 'medium' || args[2] == 'off')
 						{
 							replace({
@@ -790,6 +797,9 @@ bot.on('message', function(message)
 							message.channel.send('gamePlaying is currently set to ' + settings.gamePlaying + '.')
 							console.log(showTime() + ' gamePlaying is currently set to ' + settings.gamePlaying)
 							return
+						}
+						if (args[2].toLowerCase() === 'reset') {
+							args[2] = defSettings.gamePlaying
 						}
 						if (args[2].includes('\\') || args[2].includes('"') || args[2].includes('\''))
 						{
@@ -819,7 +829,7 @@ bot.on('message', function(message)
 
 					case 'reset':
 						delete require.cache[path.resolve('./settings_default.js')]
-						const defSettings = require('./settings_default.js')
+						defSettings = require('./settings_default.js')
 						fs.writeFile('./settings.js', 'let settingsObj = ' + JSON.stringify(defSettings, null, 2) + '\nmodule.exports = settingsObj', function(err)
 						{
 							if(err)
@@ -827,7 +837,7 @@ bot.on('message', function(message)
 								return console.log(showTime() + ' ' + err)
 							}
 							delete require.cache[path.resolve('./settings.js')]
-						settings = require('./settings.js')
+							settings = require('./settings.js')
 						})
 						bot.user.setPresence({ game: { name: defSettings.gamePlaying, type: 0 } })
 						message.channel.send('Settings have been reset to default.')
