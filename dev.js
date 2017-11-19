@@ -264,6 +264,7 @@ bot.on('message', function(message)
 				'Ana',
 				'Lúcio',
 				'Mercy',
+				'Moira',
 				'Symmetra',
 				'Zenyatta'
 			]
