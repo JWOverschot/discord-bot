@@ -849,6 +849,16 @@ bot.on('message', function(message)
 						console.log(showTime() + ' settings reset')
 						break
 
+						case 'help':
+							var embed = new Discord.RichEmbed()
+							embed.addField('MaxInPlaylist', 'can be between 0 and 50')
+							embed.addField('imgSafeSearch', 'can be Off, Medium or High')
+							embed.addField('gamePlaying', 'can be anything you like')
+							embed.setColor(0xff9c00)
+							message.channel.send(embed)
+							console.log(showTime() + ' settings help message send')
+							break
+
 					default:
 						message.channel.send('There is no setting called ' + args[1] + '.')
 						console.log(showTime() + ' invalid value')
