@@ -717,11 +717,15 @@ bot.on('message', function(message)
 			//so everything has to be inside this statment here!!
 			if (permis === true)
 			{
-				if (!args[1])
+				if (!args[1])//add description on settings and how to edit!!
 				{
 					let str = JSON.stringify(settings, null, 1)
 					console.log(str)
-					return message.channel.send('```JSON' + '\n' + str + '\n' + '```')//add description on settings and how to edit!!
+					return message.channel.send(
+						'Max of songs in playlist: **' + settings.maxInPlaylist + '**\n' + 
+						'Safe search strength: **' + settings.imgSafeSearch + '**\n' + 
+						'The game the bot is playing: **' + settings.gamePlaying + '**'
+					)
 				}
 				args[1] = args[1].toLowerCase()
 				switch(args[1]) {
