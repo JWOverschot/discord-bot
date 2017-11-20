@@ -235,7 +235,7 @@ bot.on('message', function(message)
 				embed.addField('!' + item, commandsInfo[index])
 			})
 			embed.setColor(0xff9c00)
-			message.channel.sendEmbed(embed)
+			message.channel.send(embed)
 			console.log(showTime() + ' help message send')
 			break
 		//chooseow
@@ -652,7 +652,7 @@ bot.on('message', function(message)
 				i++
 			})
 			embed.setColor(0x00c3ff)
-			message.channel.sendEmbed(embed)
+			message.channel.send(embed)
 			console.log(showTime() + ' queue list send')
 			break
 		//img
@@ -705,7 +705,7 @@ bot.on('message', function(message)
 				embed.setURL('https://github.com/JWOverschot/discord-bot')
 				embed.setAuthor('Jis van Overschot', 'https://cdn.discordapp.com/avatars/182166049314177024/d1ecfd5ecea840aef90ebfa89cef1ee8.png?size=2048')
 				embed.setDescription('For releases and patch notes visit https://github.com/JWOverschot/discord-bot/releases')
-				message.channel.sendEmbed(embed)
+				message.channel.send(embed)
 				console.log(showTime() + ' ' + botVersion)
 			break
 
