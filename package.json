@@ -2,8 +2,12 @@
   "name": "discord-bot",
   "version": "0.4.0",
   "description": "",
-  "main": "index.js",
+  "main": "bot.js",
   "scripts": {
+    "bot": "PM2 start bot.js",
+    "restart": "PM2 restart bot.js",
+    "stop": "PM2 stop bot.js",
+    "dev": "node dev.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jis van Overschot",
@@ -16,6 +20,7 @@
     "npm": "^5.5.1",
     "opusscript": "0.0.3",
     "path": "^0.12.7",
+    "pm2": "^2.7.2",
     "replace": "^0.3.0",
     "to": "^0.2.9",
     "update": "^0.7.4",
