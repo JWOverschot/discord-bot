@@ -575,12 +575,12 @@ bot.on('message', function(message)
 				console.log(showTime() + ' no queue index selected error send')
 				return
 			}
-			if (args[1] <= 0)
 			if (server === undefined) {
 				message.channel.send('No music has been played yet.')
 				console.log(showTime() + ' queue is undefined')
 				return
 			}
+			if (args[1] <= 0 || isNaN(args[1]))
 			{
 				message.channel.send('Invalid number.')
 				console.log(showTime() + ' invalid number error')
