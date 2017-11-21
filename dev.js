@@ -63,7 +63,7 @@ const commandsInfo = [
 	'Shows first image of google search', // img
 	'Plays soup', //soup
 	'Shows info over the bot', //info
-	'Change settings for the bot (only the owner of the server can change the settings)' //settings
+	'Change settings for the bot. Use **!settings help** for more info. (only the owner of the server can change the settings)' //settings
 ]
 var songQueue = []
 function showTime()
@@ -97,7 +97,7 @@ function play(connection, message)
 		if (server.queue[0])
 		{
 			play(connection, message)
-			console.log(showTime() + ' playing music')
+			console.log(showTime() + ' playing next song')
 			bot.user.setPresence({ game: { name: 'Music', type: 0 } })
 			songQueue.shift()
 		}
@@ -182,7 +182,7 @@ bot.on('message', function(message)
 				    return (new Array(length+1).join(pad)+string).slice(-length)
 				}
 				var finalTime = str_pad_left(hours,'0',2)+':'+str_pad_left(minutes,'0',2)+':'+str_pad_left(seconds,'0',2)
-				resolve('"' + title + '"' +' [' + finalTime + ']')
+				resolve('**' + title + '**' + ' [' + finalTime + ']')
 				reject(err)
 			})
 						
@@ -387,7 +387,7 @@ bot.on('message', function(message)
 			{
 				if (args[2])
 				{
-					message.channel.send('Too many arguments "!play url"')
+					message.channel.send('Too many arguments **!play url**')
 					console.log(showTime() + ' too many arguments')
 					return
 				}
@@ -724,7 +724,8 @@ bot.on('message', function(message)
 					return message.channel.send(
 						'Max of songs in playlist: **' + settings.maxInPlaylist + '**\n' + 
 						'Safe search strength: **' + settings.imgSafeSearch + '**\n' + 
-						'The game the bot is playing: **' + settings.gamePlaying + '**'
+						'The game the bot is playing: **' + settings.gamePlaying + '**' +
+						'\n\n Type **!settings help** to see how to set the settings.'
 					)
 				}
 				args[1] = args[1].toLowerCase()
@@ -747,7 +748,7 @@ bot.on('message', function(message)
 						}
 						if (args[2].includes('/') || args[2].includes('*') || args[2].includes('-') || args[2].includes('+'))
 						{
-							message.channel.send('You\'re not allowed to use "/", "-", "*", "+".')
+							message.channel.send('You\'re not allowed to use **/** **-** ***** **+**.')
 							console.log(showTime() + ' someone tride to use "/", "-", "*", "+"')
 							return
 						}
@@ -808,8 +809,8 @@ bot.on('message', function(message)
 						}
 						if (args[2].includes('\\') || args[2].includes('"') || args[2].includes('\''))
 						{
-							message.channel.send('You\'re not allowed to use \\\\, ", \'.')
-							console.log(showTime() + ' someone tride to use \\\\, ", \'')
+							message.channel.send('You\'re not allowed to use **\\** **"** **\'**.')
+							console.log(showTime() + ' someone tride to use \\, ", \'')
 							return
 						}
 						let gameString = ''
