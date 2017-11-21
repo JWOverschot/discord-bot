@@ -4,9 +4,9 @@ const botName = 'Devyatta'
 const botToken = keys.devBotKey()
 const googleSearch = keys.googleAPIKey()
 require('crashreporter').configure({
-    outDir: ('./crash_logs_dev'), // default to cwd 
-    exitOnCrash: true, // if you want that crash reporter exit(1) for you, default to true, 
-    maxCrashFile: 50 // older files will be removed up, default 5 files are kept 
+	outDir: ('./crash_logs_dev'), // default to cwd 
+	exitOnCrash: true, // if you want that crash reporter exit(1) for you, default to true, 
+	maxCrashFile: 50 // older files will be removed up, default 5 files are kept 
 })
 // the rest of the code changes
 const botVersion = 'Jisbot 1.0.0'
@@ -77,7 +77,7 @@ function showTime()
 	var y = date.getFullYear()
 	function str_pad_left(string,pad,length)
 	{
-	    return (new Array(length+1).join(pad)+string).slice(-length)
+		return (new Array(length+1).join(pad)+string).slice(-length)
 	}
 	var finalTime = str_pad_left(h,'0',2)+':'+str_pad_left(m,'0',2)+':'+str_pad_left(s,'0',2)
 	return  d + '/' + m + '/' + y + ' ' + finalTime
@@ -179,7 +179,7 @@ bot.on('message', function(message)
 				time = time - hours * 3600
 				function str_pad_left(string, pad, length)
 				{
-				    return (new Array(length+1).join(pad)+string).slice(-length)
+					return (new Array(length+1).join(pad)+string).slice(-length)
 				}
 				var finalTime = str_pad_left(hours,'0',2)+':'+str_pad_left(minutes,'0',2)+':'+str_pad_left(seconds,'0',2)
 				resolve('**' + title + '**' + ' [' + finalTime + ']')
@@ -200,7 +200,6 @@ bot.on('message', function(message)
 			message.channel.send('You don\'t have permission to use this command!')
 			return permis = false
 		}
-		console.log(message.guild.owner.id + ' <-------> ' + message.author.id)
 	}
 
 	switch (args[0].toLowerCase())
@@ -569,6 +568,7 @@ bot.on('message', function(message)
 		//remove
 		case commands[11]:
 			var server = servers[message.guild.id]
+			
 			if (!args[1])
 			{
 				message.channel.send('Type the number of the song you want to remove from the queue.')
