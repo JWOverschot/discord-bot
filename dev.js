@@ -734,6 +734,17 @@ bot.on('message', function(message)
 					)
 				}
 				args[1] = args[1].toLowerCase()
+
+				if (args[1] == 'maxplaylist' || args[1] == 'maximumplaylist' || args[1] == 'maximuminplaylist') {
+					args[1] = 'maxinplaylist'
+				}
+				else if (args[1] == 'imagesafesearch' || args[1] == 'imagesearch' || args[1] == 'imgsearch' || args[1] == 'safesearch') {
+					args[1] = 'imgsafesearch'
+				}
+				else if (args[1] == 'playing' || args[1] == 'game') {
+					args[1] = 'gameplaying'
+				}
+
 				switch(args[1]) {
 					case 'maxinplaylist':
 						if (!args[2])
