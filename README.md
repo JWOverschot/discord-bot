@@ -53,6 +53,10 @@ Plays soup.
 - !info
 Shows info over the bot.  
 
+## Notice
+
+This bot is meant to be used in one server at a time, to use it in multiple servers you have to make separate bots and run this code for each bot separate!  
+
 ---
 
 Follow development on [Trello](https://trello.com/b/iGHCrvUd).
