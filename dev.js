@@ -275,13 +275,14 @@ bot.on('message', function(message)
 		//ask
 		case commands[5]:
 			var msgCont = message.content.split('!ask').pop().toLowerCase()
+			var msgContSplit = msgCont.split('')
 			const answers = ['Yes', 'No', 'Maybe']
 			var randomNum = Math.floor(Math.random() * answers.length)
 			var answer = answers[randomNum]
 			if (msgCont.includes('what time is it') || msgCont.includes('what is the time') || msgCont.includes('time'))
 			{
-				message.channel.send('It\'s ' + showTime() + '.')
-				console.log(showTime() + ' time send')
+				answer = 'It\'s ' + showTime()
+			}
 			else if (/\d/.test(msgCont) && (msgContSplit.includes('/') || msgContSplit.includes('*') || msgContSplit.includes('-') || msgContSplit.includes('+'))) {
 				let sum = []
 				for (var i = 0; i < msgContSplit.length; i++) {
@@ -291,19 +292,18 @@ bot.on('message', function(message)
 				}
 				answer = 'Here I have calculated that for you, it\'s ' + '**' + eval(sum.toString().replace(/\,/g,"")) + '**'
 			}
+			else if (msgCont.includes('overwatch dead')) {
+				answer = 'Yes'
+			}
+			if (args[1])
+			{
+				message.channel.send(answer + '.')
+				console.log(showTime() + ' answer send')
 			}
 			else
 			{
-				if (args[1])
-				{
-					message.channel.send(answer + '.')
-					console.log(showTime() + ' answer send')
-				}
-				else
-				{
-					message.channel.send('Ask a yes or no question.')
-					console.log(showTime() + ' ask error send')
-				}
+				message.channel.send('Ask a yes or no question.')
+				console.log(showTime() + ' ask error send')
 			}
 			break
 		//say
