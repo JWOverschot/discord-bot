@@ -282,6 +282,15 @@ bot.on('message', function(message)
 			{
 				message.channel.send('It\'s ' + showTime() + '.')
 				console.log(showTime() + ' time send')
+			else if (/\d/.test(msgCont) && (msgContSplit.includes('/') || msgContSplit.includes('*') || msgContSplit.includes('-') || msgContSplit.includes('+'))) {
+				let sum = []
+				for (var i = 0; i < msgContSplit.length; i++) {
+					if ((msgContSplit[i] !== ' ' && !isNaN(msgContSplit[i]) ) || (msgContSplit[i] === '/' || msgContSplit[i] === '*' || msgContSplit[i] === '-' || msgContSplit[i] === '+')) {
+						sum.push(msgContSplit[i])
+					}
+				}
+				answer = 'Here I have calculated that for you, it\'s ' + '**' + eval(sum.toString().replace(/\,/g,"")) + '**'
+			}
 			}
 			else
 			{
