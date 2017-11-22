@@ -744,17 +744,10 @@ bot.on('message', function(message)
 				}
 				args[1] = args[1].toLowerCase()
 
-				if (args[1] == 'maxplaylist' || args[1] == 'maximumplaylist' || args[1] == 'maximuminplaylist') {
-					args[1] = 'maxinplaylist'
-				}
-				else if (args[1] == 'imagesafesearch' || args[1] == 'imagesearch' || args[1] == 'imgsearch' || args[1] == 'safesearch') {
-					args[1] = 'imgsafesearch'
-				}
-				else if (args[1] == 'playing' || args[1] == 'game') {
-					args[1] = 'gameplaying'
-				}
-
 				switch(args[1]) {
+					case 'maxplaylist':
+					case 'maximumplaylist':
+					case 'maximuminplaylist':
 					case 'maxinplaylist':
 						if (!args[2])
 						{
@@ -790,6 +783,14 @@ bot.on('message', function(message)
 						console.log(showTime() + ' maxInPlaylist changed to ' + args[2])
 						break
 
+					case 'imagessafesearch':
+					case 'imagessearch':
+					case 'imgssearch':
+					case 'imgssafesearch':
+					case 'imagesafesearch':
+					case 'imagesearch':
+					case 'imgsearch':
+					case 'safesearch':
 					case 'imgsafesearch':
 						if (!args[2])
 						{
@@ -822,6 +823,8 @@ bot.on('message', function(message)
 						}
 						break
 
+					case 'playing':
+					case 'game':
 					case 'gameplaying':
 						if (!args[2])
 						{
