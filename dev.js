@@ -21,8 +21,8 @@ youTube.setKey(googleSearch)
 const googleIms = require('google-ims')
 let client = googleIms('016227928627283430649:sy5nfspjpus', googleSearch)
 const replace = require("replace")
-let settings = require('./settings.js')
-let defSettings = require('./settings_default.js')
+let settings = require('./settings.json')
+let defSettings = require('./settings_default.json')
 const prefix = '!'
 
 const commands = [
@@ -773,7 +773,7 @@ bot.on('message', function(message)
 						replace({
 							regex: 'maxInPlaylist": "' + settings.maxInPlaylist + '"',
 							replacement: 'maxInPlaylist": "' + args[2] + '"',
-							paths: ['./settings.js'],
+							paths: ['./settings.json'],
 							recursive: true,
 							silent: true,
 						})
@@ -807,7 +807,7 @@ bot.on('message', function(message)
 							replace({
 							regex: 'imgSafeSearch": "' + settings.imgSafeSearch + '"',
 							replacement: 'imgSafeSearch": "' + args[2] + '"',
-							paths: ['./settings.js'],
+							paths: ['./settings.json'],
 							recursive: true,
 							silent: true,
 							})
@@ -849,7 +849,7 @@ bot.on('message', function(message)
 						replace({
 							regex: 'gamePlaying": "' + settings.gamePlaying + '"',
 							replacement: 'gamePlaying": "' + gameString + '"',
-							paths: ['./settings.js'],
+							paths: ['./settings.json'],
 							recursive: true,
 							silent: true,
 						})
@@ -862,16 +862,16 @@ bot.on('message', function(message)
 						break
 
 					case 'reset':
-						delete require.cache[path.resolve('./settings_default.js')]
-						defSettings = require('./settings_default.js')
-						fs.writeFile('./settings.js', 'let settingsObj = ' + JSON.stringify(defSettings, null, 2) + '\nmodule.exports = settingsObj', function(err)
+						delete require.cache[path.resolve('./settings_default.json')]
+						defSettings = require('./settings_default.json')
+						fs.writeFile('./settings.json', JSON.stringify(defSettings, null, 2), function(err)
 						{
 							if(err)
 							{
 								return console.log(showTime() + ' ' + err)
 							}
-							delete require.cache[path.resolve('./settings.js')]
-							settings = require('./settings.js')
+							delete require.cache[path.resolve('./settings.json')]
+							settings = require('./settings.json')
 						})
 						bot.user.setPresence({ game: { name: defSettings.gamePlaying, type: 0 } })
 						message.channel.send('Settings have been reset to default.')
