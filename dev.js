@@ -824,6 +824,7 @@ bot.on('message', function(message)
 
 					case 'playing':
 					case 'game':
+					case 'status':
 					case 'gameplaying':
 						if (!args[2])
 						{
