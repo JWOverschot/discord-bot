@@ -5,4 +5,3 @@ crash_logs_dev/*
 !crash_logs_dev/.gitkeep
 
 **/6f97a6a13d775ff617e6e9607c65df.js
-**/settings.js
