@@ -52,6 +52,17 @@ Shows first image of google search.
 Plays soup.  
 - !info
 Shows info over the bot.  
+- !settings  
+Change settings for the bot. (only the owner of the server can change the settings).  
+
+#### Settings  
+
+- MaxInPlaylist  
+Between 1 and 50.  
+- ImgSafeSearch  
+High, medium, off.  
+- GamePlaying  
+Default is Overwatch, can be changed into anything, or tpye '-' to leave it empty.  
 
 ## Notice
 
