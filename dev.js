@@ -842,21 +842,39 @@ bot.on('message', function(message)
 							return
 						}
 						let gameString = ''
-						for (var i = 2; i < args.length; i++) {
-							gameString += args[i] + ' '
+
+						if (args[2] === '-') {
+							gameString = null
 						}
-						gameString = gameString.trim()
+						else {
+							for (var i = 2; i < args.length; i++) {
+								gameString += args[i] + ' '
+							}
+							gameString = gameString.trim()
+							gameString = '"' + gameString + '"'
+						}
+						if (isNaN(settings.gamePlaying)) {
+							settings.gamePlaying = '"' + settings.gamePlaying + '"'
+						}
 						replace({
-							regex: 'gamePlaying": "' + settings.gamePlaying + '"',
-							replacement: 'gamePlaying": "' + gameString + '"',
+							regex: 'gamePlaying": ' + settings.gamePlaying,
+							replacement: 'gamePlaying": ' + gameString,
 							paths: ['./settings.json'],
 							recursive: true,
 							silent: true,
 						})
+						if (gameString !== null) {
+							if (gameString.includes('"')) {
+								gameString = gameString.replace(/['"]+/g, '')
+							}
+						}
 						
 						settings.gamePlaying = gameString
-						bot.user.setPresence({ game: { name: settings.gamePlaying, type: 0 } })
+						bot.user.setPresence({ game: { name: gameString, type: 0 } })
 						console.log(showTime() + ' settings updated')
+						if (gameString === null) {
+							gameString = 'off'
+						}
 						message.channel.send('gamePlaying is now changed to ' + gameString)
 						console.log(showTime() + ' gamePlaying changed to ' + gameString)
 						break
@@ -882,7 +900,7 @@ bot.on('message', function(message)
 							var embed = new Discord.RichEmbed()
 							embed.addField('MaxInPlaylist', 'can be between 0 and 50')
 							embed.addField('imgSafeSearch', 'can be Off, Medium or High')
-							embed.addField('gamePlaying', 'can be anything you like')
+							embed.addField('gamePlaying', 'can be anything you like or tpye **-** to leave it empty')
 							embed.setColor(0xff9c00)
 							message.channel.send(embed)
 							console.log(showTime() + ' settings help message send')
