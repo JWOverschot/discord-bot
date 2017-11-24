@@ -733,8 +733,7 @@ bot.on('message', function(message)
 			{
 				if (!args[1])//add description on settings and how to edit!!
 				{
-					let str = JSON.stringify(settings, null, 1)
-					console.log(str)
+					console.log(showTime() + ' Current settings send')
 					return message.channel.send(
 						'Max of songs in playlist: **' + settings.maxInPlaylist + '**\n' + 
 						'Safe search strength: **' + settings.imgSafeSearch + '**\n' + 
