@@ -1,7 +1,8 @@
 node_modules/
-crash_logs/*
-crash_logs_dev/*
-!crash_logs/.gitkeep
-!crash_logs_dev/.gitkeep
+prod/crash_logs/*
+dev/crash_logs_dev/*
+!prod/crash_logs/.gitkeep
+!dev/crash_logs_dev/.gitkeep
 
-**/6f97a6a13d775ff617e6e9607c65df.js
+dev/6f97a6a13d775ff617e6e9607c65df.js
+prod/6f97a6a13d775ff617e6e9607c65df.js

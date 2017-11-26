@@ -692,8 +692,8 @@ bot.on('message', function(message)
 					console.log(showTime() + ' image send')
 				})
 			}).catch(function(error){
-					message.channel.send('No search results.')
-					console.log(showTime() + ' no search results for image search')
+				message.channel.send('No search results.')
+				console.log(showTime() + ' no search results for image search')
 			})
 			break
 		//soup
