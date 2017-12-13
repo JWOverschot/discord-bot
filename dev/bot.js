@@ -1,8 +1,10 @@
 // specific for dev bot
-const keys = require('./6f97a6a13d775ff617e6e9607c65df.js')
-const botName = 'Devyatta'
-const botToken = keys.devBotKey()
-const googleSearch = keys.googleAPIKey()
+//const botConfig = require('../configs/config.json')
+const botConfig = require('../configs/config-dev.json') //only for dev
+
+const botName = botConfig.botName
+const botToken = botConfig.keys.botKey
+const googleSearch = botConfig.keys.googleAPIKey
 require('crashreporter').configure({
 	outDir: ('./crash_logs_dev'), // default to cwd 
 	exitOnCrash: true, // if you want that crash reporter exit(1) for you, default to true, 

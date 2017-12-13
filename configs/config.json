@@ -1,0 +1,7 @@
+{
+	"keys": {
+		"botKey": "bot Token",
+		"googleAPIKey": "Google cloude api key"
+	},
+	"botName": "Name of bot"
+}
