@@ -350,7 +350,8 @@ bot.on('message', function(message)
 				'No snowflake ever falls in the wrong place.',
 				'Every rooster crows in its own pen.',
 				'Walk along the path to enlightenment.',
-				'If you do not change direction, you may end up where you are headed.'
+				'If you do not change direction, you may end up where you are headed.',
+				'Joy to the world.'
 			]
 			var randomNum = Math.floor(Math.random() * quotes.length)
 			var quote = quotes[randomNum]
