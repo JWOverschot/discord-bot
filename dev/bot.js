@@ -503,7 +503,7 @@ bot.on('message', function(message)
 					return new Promise(function(resolve, reject)
 					{
 						youTube.addParam('type', 'video')
-						youTube.search(message.content.split('!play').pop(), 1, function(error, result)
+						youTube.search(message.content.split('!play').pop(), 10, function(error, result)
 						{
 							if (error)
 							{
@@ -512,30 +512,38 @@ bot.on('message', function(message)
 							}
 							else
 							{
-								if (result.items[0] == undefined  || result.items[0].id.videoId == undefined)
+								let done = false
+								for (var i = 0; i < result.items.length && done === false; i++) {
+
+									if (result.items[i].id.videoId !== undefined && result.items[i].snippet.liveBroadcastContent === 'none')
+									{
+										// extra check for video types, because youTube.addParam('type', 'video') doesn't work https://github.com/nodenica/youtube-node/issues/41
+										var server = servers[message.guild.id]
+										var ytVideoId = result.items[i].id.videoId
+										var ytVideo = 'https://www.youtube.com/watch?v=' + ytVideoId
+
+										done = true
+
+										resolve(result)
+										reject(error)
+
+										server.queue.push(ytVideo)
+
+										console.log(showTime() + ' song added to queue')
+										getVideoInfo(ytVideo).then(function(ytinfoName){
+											message.channel.send(ytinfoName + ' added to queue!')
+											songQueue.push(ytinfoName)
+										}).catch(function(err){
+											message.channel.send('Couldn\'t get song information.')
+											console.log(showTime() + ' error no song information')
+										})
+									}
+								}
+								if (result.items[0] == undefined || result.items.length <= 0 || done === false)
 								{
 									message.channel.send('No search results.')
 									console.log(showTime() + ' no search results')
-								}
-								else
-								{
-									var server = servers[message.guild.id]
-									var ytVideoId = result.items[0].id.videoId
-									var ytVideo = 'https://www.youtube.com/watch?v=' + ytVideoId
-
-									resolve(result)
-									reject(error)
-
-									server.queue.push(ytVideo)
-
-									console.log(showTime() + ' song added to queue')
-									getVideoInfo(ytVideo).then(function(ytinfoName){
-										message.channel.send(ytinfoName + ' added to queue!')
-										songQueue.push(ytinfoName)
-									}).catch(function(err){
-										message.channel.send('Couldn\'t get song information.')
-										console.log(showTime() + ' error no song information')
-									})
+									return
 								}
 							}
 						})
